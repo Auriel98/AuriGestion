@@ -1,0 +1,295 @@
+.payroll-settings-page {
+  padding: 24px;
+}
+
+.payroll-loading {
+  padding: 40px;
+  text-align: center;
+  color: #777;
+}
+
+.page-header,
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.page-header h1 {
+  margin: 0;
+  font-size: 28px;
+}
+
+.page-header p,
+.section-header p,
+.card-title p {
+  margin: 6px 0 0;
+  color: #777;
+}
+
+.btn {
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-primary {
+  background: #f58220;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #df6d0b;
+}
+
+.btn-secondary {
+  background: #eee;
+  color: #333;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.payroll-message {
+  margin-bottom: 20px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  background: #fff4e8;
+  color: #b85c00;
+}
+
+.payroll-tabs {
+  display: flex;
+  gap: 4px;
+  margin: 25px 0 16px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.payroll-tabs button {
+  border: none;
+  background: transparent;
+  padding: 13px 18px;
+  cursor: pointer;
+  color: #777;
+  font-weight: 600;
+  border-bottom: 3px solid transparent;
+}
+
+.payroll-tabs button.active {
+  color: #f58220;
+  border-bottom-color: #f58220;
+}
+
+.settings-card {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+}
+
+.card-title {
+  margin-bottom: 24px;
+}
+
+.card-title h2,
+.section-header h2 {
+  margin: 0;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.form-group label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #444;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 11px 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  outline: none;
+  font-size: 14px;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: #f58220;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 25px;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  background: #fafafa;
+  text-align: left;
+  padding: 13px;
+  font-size: 13px;
+  color: #666;
+}
+
+td {
+  padding: 14px 13px;
+  border-top: 1px solid #eee;
+  font-size: 14px;
+}
+
+.tax-flags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.tax-flags span {
+  padding: 4px 7px;
+  border-radius: 5px;
+  background: #fff1e5;
+  color: #c7610a;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.status {
+  border: none;
+  border-radius: 20px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.status.active {
+  background: #e8f7ee;
+  color: #168346;
+}
+
+.status.inactive {
+  background: #f3f3f3;
+  color: #777;
+}
+
+.table-action {
+  border: none;
+  background: transparent;
+  color: #f58220;
+  cursor: pointer;
+  font-weight: 600;
+  margin-right: 8px;
+}
+
+.tax-options {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-top: 22px;
+  padding: 16px;
+  background: #fafafa;
+  border-radius: 8px;
+}
+
+.tax-options label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  z-index: 1000;
+}
+
+.modal {
+  background: white;
+  width: min(760px, 100%);
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: 14px;
+  padding: 24px;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.modal-header h2 {
+  margin: 0;
+}
+
+.modal-header p {
+  margin: 5px 0 0;
+  color: #777;
+}
+
+.modal-close {
+  border: none;
+  background: transparent;
+  font-size: 28px;
+  cursor: pointer;
+  color: #777;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 25px;
+}
+
+@media (max-width: 800px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tax-options {
+    grid-template-columns: 1fr;
+  }
+
+  .page-header,
+  .section-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

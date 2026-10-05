@@ -1,0 +1,458 @@
+.app-layout {
+    min-height: 100vh;
+
+    display: flex;
+
+    background: #f5f5f5;
+}
+
+
+/* =========================================
+   SIDEBAR
+========================================= */
+
+.sidebar {
+    width: 260px;
+
+    min-height: 100vh;
+
+    background: #ffffff;
+
+    border-right:
+        1px solid #e7e7e7;
+
+    display: flex;
+
+    flex-direction: column;
+
+    padding: 20px 14px;
+}
+
+
+.sidebar-brand {
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+
+    padding:
+        5px 8px 20px;
+}
+
+
+.sidebar-logo {
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 9px;
+
+    background: #f68b1e;
+
+    color: #ffffff;
+
+    font-size: 15px;
+
+    font-weight: 800;
+}
+
+
+.sidebar-brand strong {
+    display: block;
+
+    font-size: 16px;
+}
+
+
+.sidebar-brand span {
+    display: block;
+
+    margin-top: 2px;
+
+    font-size: 11px;
+
+    color: #999999;
+}
+
+
+/* =========================================
+   COMPANY
+========================================= */
+
+.company-box {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 12px;
+
+    background: #fafafa;
+
+    border:
+        1px solid #eeeeee;
+
+    border-radius: 9px;
+
+    margin-bottom: 18px;
+}
+
+
+.company-icon {
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 7px;
+
+    background: #fff2e5;
+
+    color: #f68b1e;
+}
+
+
+.company-box div:nth-child(2) {
+    flex: 1;
+}
+
+
+.company-box span {
+    display: block;
+
+    font-size: 10px;
+
+    color: #999999;
+}
+
+
+.company-box strong {
+    display: block;
+
+    margin-top: 2px;
+
+    font-size: 13px;
+}
+
+
+/* =========================================
+   MENU
+========================================= */
+
+.sidebar-menu {
+    flex: 1;
+
+    overflow-y: auto;
+}
+
+
+.menu-title {
+    margin:
+        19px 9px 7px;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    color: #a0a0a0;
+
+    letter-spacing: 0.5px;
+}
+
+
+.menu-item {
+    height: 42px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 0 11px;
+
+    border-radius: 7px;
+
+    color: #555555;
+
+    text-decoration: none;
+
+    font-size: 13px;
+
+    cursor: pointer;
+
+    margin-bottom: 3px;
+}
+
+
+.menu-item:hover {
+    background: #fafafa;
+
+    color: #f68b1e;
+}
+
+
+.menu-item.active {
+    background: #fff1e4;
+
+    color: #f68b1e;
+
+    font-weight: 600;
+}
+
+
+/* =========================================
+   USER
+========================================= */
+
+.sidebar-user {
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    padding:
+        14px 5px 3px;
+
+    border-top:
+        1px solid #eeeeee;
+}
+
+
+.user-photo {
+    width: 39px;
+    height: 39px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    overflow: hidden;
+
+    background: #f68b1e;
+
+    color: #ffffff;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-weight: 700;
+
+    font-size: 13px;
+}
+
+
+.user-photo img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+
+.user-info {
+    flex: 1;
+
+    min-width: 0;
+}
+
+
+.user-info strong {
+    display: block;
+
+    font-size: 12px;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+
+.user-info span {
+    display: block;
+
+    margin-top: 2px;
+
+    color: #999999;
+
+    font-size: 10px;
+
+    text-transform: capitalize;
+}
+
+
+.sidebar-user button {
+    border: none;
+
+    background: transparent;
+
+    color: #888888;
+
+    cursor: pointer;
+
+    display: flex;
+
+    padding: 5px;
+}
+
+
+.sidebar-user button:hover {
+    color: #f68b1e;
+}
+
+
+/* =========================================
+   MAIN
+========================================= */
+
+.main-content {
+    flex: 1;
+
+    min-width: 0;
+}
+
+
+.topbar {
+    height: 76px;
+
+    background: #ffffff;
+
+    border-bottom:
+        1px solid #e7e7e7;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding:
+        0 30px;
+}
+
+
+.topbar h1 {
+    margin: 0;
+
+    font-size: 21px;
+}
+
+
+.topbar p {
+    margin:
+        4px 0 0;
+
+    color: #999999;
+
+    font-size: 12px;
+}
+
+
+.user-photo.small {
+    width: 36px;
+    height: 36px;
+}
+
+
+.page-content {
+    padding: 30px;
+}
+
+
+.profile-photo-wrapper {
+    flex-shrink: 0;
+}
+
+.profile-photo {
+    position: relative;
+
+    width: 40px;
+    height: 40px;
+
+    padding: 0;
+
+    border: none;
+
+    border-radius: 50%;
+
+    overflow: hidden;
+
+    background: #f68b1e;
+
+    color: #ffffff;
+
+    cursor: pointer;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+}
+
+.profile-photo img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+.profile-photo > span {
+    font-size: 13px;
+
+    font-weight: 700;
+}
+
+.profile-photo-camera {
+    position: absolute;
+
+    right: 0;
+    bottom: 0;
+
+    width: 17px;
+    height: 17px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background: #f68b1e;
+
+    border-radius: 50%;
+}
+
+.profile-photo:hover {
+    opacity: 0.9;
+}
+
+a.company-box {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+}
+
+.company-box.active,
+a.company-box:hover {
+    background: rgba(246, 139, 30, 0.12);
+}
+
+.company-icon-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: inherit;
+}

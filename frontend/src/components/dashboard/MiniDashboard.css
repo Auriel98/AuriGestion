@@ -1,0 +1,12 @@
+.mini-dashboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+@media (max-width: 600px) {
+    .mini-dashboard {
+        grid-template-columns: 1fr;
+    }
+}

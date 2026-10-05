@@ -1,0 +1,304 @@
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+
+    background: rgba(0, 0, 0, 0.45);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    z-index: 1000;
+}
+
+
+.employee-modal {
+    width: min(850px, 100%);
+
+    max-height: 92vh;
+
+    background: white;
+
+    border-radius: 14px;
+
+    overflow-y: auto;
+
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.20);
+}
+
+
+/* ================================
+   HEADER
+================================ */
+
+.employee-modal-header {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: flex-start;
+
+    padding: 22px 24px;
+
+    border-bottom: 1px solid #eeeeee;
+}
+
+.employee-modal-header h2 {
+    margin: 0;
+
+    font-size: 20px;
+
+    color: #222;
+}
+
+.employee-modal-header p {
+    margin: 5px 0 0;
+
+    color: #888;
+
+    font-size: 13px;
+}
+
+.modal-close {
+    width: 34px;
+    height: 34px;
+
+    border: none;
+
+    background: #f5f5f5;
+
+    border-radius: 7px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+
+    color: #555;
+}
+
+.modal-close:hover {
+    background: #eeeeee;
+}
+
+
+/* ================================
+   ERREUR
+================================ */
+
+.form-error {
+    margin: 18px 24px 0;
+
+    padding: 11px 13px;
+
+    border-radius: 7px;
+
+    background: #fff0f0;
+
+    border: 1px solid #ffd4d4;
+
+    color: #c62828;
+
+    font-size: 13px;
+}
+
+
+/* ================================
+   FORMULAIRE
+================================ */
+
+.employee-form {
+    padding: 24px;
+}
+
+.form-section {
+    margin-bottom: 28px;
+}
+
+.form-section-title {
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+
+    margin-bottom: 17px;
+}
+
+.section-icon {
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 8px;
+
+    background: #fff1e6;
+
+    color: #ff7900;
+}
+
+.form-section-title h3 {
+    margin: 0;
+
+    font-size: 14px;
+
+    color: #222;
+}
+
+.form-section-title p {
+    margin: 3px 0 0;
+
+    color: #999;
+
+    font-size: 11px;
+}
+
+
+/* ================================
+   GRID
+================================ */
+
+.form-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 16px;
+}
+
+.form-group {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 6px;
+}
+
+.form-group label {
+    font-size: 12px;
+
+    font-weight: 600;
+
+    color: #555;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    border: 1px solid #dddddd;
+
+    border-radius: 7px;
+
+    padding: 10px 11px;
+
+    font-size: 13px;
+
+    color: #333;
+
+    background: white;
+
+    outline: none;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #ff7900;
+
+    box-shadow:
+        0 0 0 2px rgba(255, 121, 0, 0.08);
+}
+
+.form-group input::placeholder {
+    color: #aaa;
+}
+
+
+/* ================================
+   FOOTER
+================================ */
+
+.employee-modal-footer {
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 10px;
+
+    padding-top: 20px;
+
+    border-top: 1px solid #eeeeee;
+}
+
+.secondary-button {
+    border: 1px solid #dddddd;
+
+    background: white;
+
+    color: #555;
+
+    border-radius: 8px;
+
+    padding: 10px 16px;
+
+    font-size: 13px;
+
+    cursor: pointer;
+}
+
+.secondary-button:hover {
+    background: #f7f7f7;
+}
+
+.primary-button:disabled,
+.secondary-button:disabled {
+    opacity: 0.6;
+
+    cursor: not-allowed;
+}
+
+
+/* ================================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 650px) {
+
+    .modal-overlay {
+        padding: 10px;
+    }
+
+    .employee-modal {
+        max-height: 96vh;
+
+        border-radius: 10px;
+    }
+
+    .employee-form {
+        padding: 18px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .employee-modal-footer {
+        flex-direction: column-reverse;
+    }
+
+    .employee-modal-footer button {
+        width: 100%;
+    }
+}

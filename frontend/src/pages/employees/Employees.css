@@ -1,0 +1,478 @@
+.employees-page {
+    width: 100%;
+}
+
+
+/* ================================
+   HEADER
+================================ */
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.page-header h1 {
+    margin: 0;
+    font-size: 26px;
+    color: #222;
+}
+
+.page-header p {
+    margin: 6px 0 0;
+    color: #777;
+    font-size: 14px;
+}
+
+
+/* ================================
+   BOUTON PRINCIPAL
+================================ */
+
+.primary-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    border: none;
+    border-radius: 8px;
+
+    background: #ff7900;
+    color: white;
+
+    padding: 11px 17px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.primary-button:hover {
+    background: #e96e00;
+}
+
+
+/* ================================
+   CARTE
+================================ */
+
+.employees-card {
+    background: white;
+
+    border: 1px solid #eeeeee;
+
+    border-radius: 12px;
+
+    overflow: visible;
+}
+
+
+/* ================================
+   TOOLBAR
+================================ */
+
+.employees-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 16px;
+
+    padding: 18px;
+
+    border-bottom: 1px solid #eeeeee;
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    width: 350px;
+
+    border: 1px solid #dddddd;
+    border-radius: 8px;
+
+    padding: 10px 12px;
+
+    color: #888;
+}
+
+.search-box:focus-within {
+    border-color: #ff7900;
+}
+
+.search-box input {
+    width: 100%;
+
+    border: none;
+    outline: none;
+
+    font-size: 14px;
+}
+
+.employees-toolbar select {
+    border: 1px solid #dddddd;
+
+    border-radius: 8px;
+
+    padding: 10px 13px;
+
+    background: white;
+
+    color: #444;
+
+    outline: none;
+
+    cursor: pointer;
+}
+
+
+/* ================================
+   TABLE
+================================ */
+
+.table-wrapper {
+    width: 100%;
+
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    min-width: 1100px;
+}
+
+thead {
+    background: #fafafa;
+}
+
+th {
+    padding: 13px 18px;
+
+    text-align: left;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    color: #777;
+
+    border-bottom: 1px solid #eeeeee;
+}
+
+td {
+    padding: 15px 18px;
+
+    font-size: 13px;
+
+    color: #444;
+
+    border-bottom: 1px solid #f0f0f0;
+
+    white-space: nowrap;
+}
+
+tbody tr:hover {
+    background: #fffaf6;
+}
+
+
+/* ================================
+   EMPLOYÉ
+================================ */
+
+.employee-cell {
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+}
+
+.employee-cell > div:last-child {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 3px;
+}
+
+.employee-cell strong {
+    font-size: 13px;
+
+    color: #222;
+}
+
+.employee-cell span {
+    font-size: 11px;
+
+    color: #888;
+}
+
+
+/* ================================
+   AVATAR
+================================ */
+
+.employee-avatar,
+.employee-avatar-placeholder {
+    width: 40px;
+    height: 40px;
+
+    min-width: 40px;
+
+    border-radius: 50%;
+
+    object-fit: cover;
+}
+
+.employee-avatar-placeholder {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background: #fff1e6;
+
+    color: #ff7900;
+
+    font-size: 12px;
+
+    font-weight: 700;
+}
+
+
+/* ================================
+   MATRICULE
+================================ */
+
+.matricule {
+    font-family: monospace;
+
+    font-size: 12px;
+
+    color: #555;
+}
+
+
+/* ================================
+   STATUT
+================================ */
+
+.status-badge,
+.user-badge,
+.no-user-badge {
+    display: inline-flex;
+
+    align-items: center;
+
+    border-radius: 20px;
+
+    padding: 5px 9px;
+
+    font-size: 11px;
+
+    font-weight: 600;
+}
+
+.status-badge.active {
+    background: #eaf7ee;
+
+    color: #218739;
+}
+
+.status-badge.inactive {
+    background: #f3f3f3;
+
+    color: #777;
+}
+
+.user-badge {
+    background: #fff1e6;
+
+    color: #ff7900;
+}
+
+.no-user-badge {
+    background: #f5f5f5;
+
+    color: #888;
+}
+
+
+/* ================================
+   ACTIONS
+================================ */
+
+.action-container {
+    position: relative;
+
+    display: flex;
+
+    justify-content: flex-end;
+}
+
+.action-button {
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+
+    background: transparent;
+
+    border-radius: 7px;
+
+    cursor: pointer;
+
+    color: #666;
+}
+
+.action-button:hover {
+    background: #f5f5f5;
+
+    color: #222;
+}
+
+.action-menu {
+    position: absolute;
+
+    right: 0;
+
+    top: 38px;
+
+    width: 170px;
+
+    background: white;
+
+    border: 1px solid #eeeeee;
+
+    border-radius: 8px;
+
+    box-shadow:
+        0 8px 25px rgba(0, 0, 0, 0.10);
+
+    padding: 5px;
+
+    z-index: 50;
+}
+
+.action-menu button {
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    border: none;
+
+    background: transparent;
+
+    padding: 9px 10px;
+
+    border-radius: 6px;
+
+    font-size: 13px;
+
+    color: #444;
+
+    cursor: pointer;
+
+    text-align: left;
+}
+
+.action-menu button:hover {
+    background: #f7f7f7;
+}
+
+.action-menu button.danger {
+    color: #d93025;
+}
+
+.action-menu button:disabled {
+    opacity: 0.5;
+
+    cursor: not-allowed;
+}
+
+
+/* ================================
+   EMPTY / LOADING
+================================ */
+
+.table-loading,
+.empty-state {
+    min-height: 250px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    color: #999;
+}
+
+.empty-state svg {
+    color: #ccc;
+
+    margin-bottom: 10px;
+}
+
+.empty-state h3 {
+    margin: 0;
+
+    color: #555;
+
+    font-size: 15px;
+}
+
+.empty-state p {
+    margin: 6px 0 0;
+
+    font-size: 13px;
+}
+
+
+/* ================================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 800px) {
+
+    .page-header {
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        gap: 15px;
+    }
+
+    .employees-toolbar {
+        flex-direction: column;
+
+        align-items: stretch;
+    }
+
+    .search-box {
+        width: auto;
+    }
+
+}

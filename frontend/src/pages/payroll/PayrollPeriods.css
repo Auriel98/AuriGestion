@@ -1,0 +1,303 @@
+.payroll-periods-page {
+  padding: 24px;
+}
+
+.payroll-periods-page .page-header,
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.page-header h1 {
+  margin: 0;
+  font-size: 28px;
+}
+
+.page-header p,
+.section-header p {
+  margin: 6px 0 0;
+  color: #777;
+}
+
+.payroll-message {
+  margin-bottom: 20px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  background: #fff4e8;
+  color: #b85c00;
+}
+
+.periods-card {
+  background: white;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+}
+
+.periods-card h2 {
+  margin: 0;
+}
+
+.btn {
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-primary {
+  background: #f58220;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #df6d0b;
+}
+
+.btn-secondary {
+  background: #eee;
+  color: #333;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  padding: 13px;
+  background: #fafafa;
+  text-align: left;
+  color: #666;
+  font-size: 13px;
+}
+
+td {
+  padding: 14px 13px;
+  border-top: 1px solid #eee;
+  font-size: 14px;
+}
+
+.empty-row {
+  text-align: center;
+  color: #888;
+  padding: 40px;
+}
+
+.period-status {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.period-status.draft {
+  background: #fff3e6;
+  color: #d66a00;
+}
+
+.period-status.calculated {
+  background: #e9f3ff;
+  color: #1976c9;
+}
+
+.period-status.validated {
+  background: #f0ebff;
+  color: #7045c5;
+}
+
+.period-status.paid {
+  background: #e7f7ed;
+  color: #168346;
+}
+
+.period-status.cancelled {
+  background: #f3f3f3;
+  color: #777;
+}
+
+.table-action {
+  border: none;
+  background: transparent;
+  color: #f58220;
+  cursor: pointer;
+  font-weight: 600;
+  margin-right: 10px;
+}
+
+.table-action.danger {
+  color: #d33;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 1000;
+}
+
+.modal {
+  background: white;
+  width: min(720px, 100%);
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: 14px;
+  padding: 24px;
+}
+
+.employee-selection-modal {
+  width: min(850px, 100%);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.modal-header h2 {
+  margin: 0;
+}
+
+.modal-header p {
+  margin: 5px 0;
+  color: #777;
+}
+
+.modal-close {
+  border: none;
+  background: transparent;
+  font-size: 28px;
+  color: #777;
+  cursor: pointer;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.form-group label {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.form-group input,
+.form-group select {
+  padding: 11px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 25px;
+}
+
+.selection-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.employee-list {
+  margin-top: 10px;
+  max-height: 430px;
+  overflow-y: auto;
+}
+
+.employee-option {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.employee-option:hover,
+.employee-option.selected {
+  background: #fff7ef;
+}
+
+.employee-option input {
+  width: 18px;
+  height: 18px;
+}
+
+.employee-avatar {
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  border-radius: 50%;
+  background: #f58220;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  overflow: hidden;
+}
+
+.employee-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.employee-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 180px;
+}
+
+.employee-info span {
+  color: #888;
+  font-size: 12px;
+}
+
+.employee-position {
+  margin-left: auto;
+  color: #666;
+  font-size: 13px;
+}
+
+@media (max-width: 750px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .employee-position {
+    display: none;
+  }
+}

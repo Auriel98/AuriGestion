@@ -1,0 +1,224 @@
+.contract-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 25px;
+    z-index: 1000;
+}
+
+.contract-modal {
+    width: 100%;
+    max-width: 760px;
+    max-height: 92vh;
+    overflow-y: auto;
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+}
+
+.contract-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 22px 24px;
+    border-bottom: 1px solid #eee;
+}
+
+.contract-modal-header > div:first-child {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.contract-modal-title-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    background: #fff1e6;
+    color: #ff7900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.contract-modal-header h2 {
+    margin: 0;
+    font-size: 20px;
+    color: #222;
+}
+
+.contract-modal-header p {
+    margin: 5px 0 0;
+    color: #888;
+    font-size: 13px;
+}
+
+.contract-modal-close {
+    border: none;
+    background: transparent;
+    color: #777;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.contract-modal-close:hover {
+    color: #222;
+}
+
+.contract-modal-error {
+    margin: 18px 24px 0;
+    padding: 12px 14px;
+    border-radius: 8px;
+    background: #fff0f0;
+    color: #c62828;
+    font-size: 13px;
+}
+
+.contract-form {
+    padding: 24px;
+}
+
+.contract-form-section {
+    margin-bottom: 25px;
+}
+
+.contract-section-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #333;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.contract-section-title svg {
+    color: #ff7900;
+}
+
+.contract-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.contract-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.contract-form-group label {
+    font-size: 13px;
+    color: #555;
+    font-weight: 600;
+}
+
+.contract-form-group input,
+.contract-form-group select,
+.contract-form-group textarea {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 11px 12px;
+    background: #fff;
+    color: #222;
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+}
+
+.contract-form-group input:focus,
+.contract-form-group select:focus,
+.contract-form-group textarea:focus {
+    border-color: #ff7900;
+    box-shadow: 0 0 0 3px rgba(255, 121, 0, 0.08);
+}
+
+.contract-form-group textarea {
+    resize: vertical;
+}
+
+.contract-form-group small {
+    color: #999;
+    font-size: 11px;
+}
+
+.contract-input-icon {
+    position: relative;
+}
+
+.contract-input-icon svg {
+    position: absolute;
+    left: 11px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+    pointer-events: none;
+}
+
+.contract-input-icon input {
+    padding-left: 35px;
+}
+
+.contract-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.contract-btn-secondary,
+.contract-btn-primary {
+    border: none;
+    border-radius: 8px;
+    padding: 11px 18px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.contract-btn-secondary {
+    background: #f2f2f2;
+    color: #555;
+}
+
+.contract-btn-primary {
+    background: #ff7900;
+    color: white;
+}
+
+.contract-btn-primary:hover {
+    background: #e86d00;
+}
+
+.contract-btn-secondary:disabled,
+.contract-btn-primary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+@media (max-width: 650px) {
+
+    .contract-modal-overlay {
+        padding: 10px;
+    }
+
+    .contract-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .contract-modal-footer {
+        flex-direction: column-reverse;
+    }
+
+    .contract-btn-secondary,
+    .contract-btn-primary {
+        width: 100%;
+    }
+}

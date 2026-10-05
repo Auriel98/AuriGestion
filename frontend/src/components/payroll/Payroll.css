@@ -1,0 +1,496 @@
+/* =========================================
+   PAIE - STYLES COMMUNS
+========================================= */
+
+.payroll-page {
+    padding: 24px;
+}
+
+.payroll-page-header {
+    margin-bottom: 20px;
+}
+
+.payroll-page-header h1 {
+    margin: 0 0 6px;
+    font-size: 28px;
+    color: #222;
+}
+
+.payroll-page-header p {
+    margin: 0;
+    color: #777;
+    font-size: 14px;
+}
+
+
+/* =========================================
+   ONGLETS
+========================================= */
+
+.payroll-tabs {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
+    overflow-x: auto;
+}
+
+.payroll-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 16px;
+    border: none;
+    border-bottom: 2px solid transparent;
+    background: transparent;
+    color: #777;
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.payroll-tab:hover {
+    color: #e66d00;
+}
+
+.payroll-tab.active {
+    color: #ff7900;
+    border-bottom-color: #ff7900;
+}
+
+
+/* =========================================
+   BARRE D'OUTILS
+========================================= */
+
+.payroll-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.payroll-hint {
+    margin: 0;
+    max-width: 640px;
+    color: #777;
+    font-size: 13px;
+}
+
+.payroll-select {
+    padding: 10px 12px;
+    border: 1px solid #e7e7e7;
+    border-radius: 10px;
+    background: #fff;
+    font-family: inherit;
+    font-size: 14px;
+    color: #333;
+}
+
+
+/* =========================================
+   CARTES ET TABLEAUX
+========================================= */
+
+.payroll-card {
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 16px;
+}
+
+.payroll-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.payroll-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.payroll-table th {
+    background: #fafafa;
+    padding: 13px 16px;
+    text-align: left;
+    font-size: 12px;
+    font-weight: 600;
+    color: #777;
+    border-bottom: 1px solid #eee;
+}
+
+.payroll-table td {
+    padding: 13px 16px;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 13px;
+    color: #444;
+}
+
+.payroll-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.payroll-table tbody tr:hover {
+    background: #fffaf6;
+}
+
+.payroll-table-small th,
+.payroll-table-small td {
+    padding: 9px 12px;
+}
+
+.payroll-table-small input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 7px 9px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 13px;
+}
+
+.payroll-row-inactive {
+    opacity: .55;
+}
+
+.payroll-empty,
+.payroll-loading {
+    text-align: center;
+    padding: 40px 20px !important;
+    color: #999;
+}
+
+.payroll-row-actions {
+    display: flex;
+    gap: 6px;
+}
+
+
+/* =========================================
+   BADGES DE CATEGORIE
+========================================= */
+
+.payroll-badge {
+    display: inline-flex;
+    padding: 4px 9px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    background: #f1f1f1;
+    color: #666;
+}
+
+.badge-earning {
+    background: #eaf8ef;
+    color: #16803c;
+}
+
+.badge-non_taxable_earning {
+    background: #e9f3ff;
+    color: #2875c7;
+}
+
+.badge-employee_contribution {
+    background: #fff4df;
+    color: #c66a00;
+}
+
+.badge-employer_contribution {
+    background: #f0edff;
+    color: #6650c9;
+}
+
+.badge-tax {
+    background: #fdecec;
+    color: #c62828;
+}
+
+.badge-deduction {
+    background: #f1f1f1;
+    color: #666;
+}
+
+
+/* =========================================
+   BAREMES
+========================================= */
+
+.payroll-scale {
+    padding: 16px;
+}
+
+.payroll-scale-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.payroll-scale-header h3 {
+    margin: 0 0 4px;
+    font-size: 16px;
+    color: #222;
+}
+
+.payroll-scale-header p {
+    margin: 0;
+    color: #777;
+    font-size: 13px;
+}
+
+.payroll-code {
+    font-size: 11px;
+    font-weight: 600;
+    color: #999;
+}
+
+
+/* =========================================
+   BOUTONS
+========================================= */
+
+.payroll-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 10px 14px;
+    border: 1px solid #e0e0e0;
+    border-radius: 9px;
+    background: #fff;
+    color: #444;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .2s ease;
+}
+
+.payroll-btn:hover:not(:disabled) {
+    background: #f6f6f6;
+}
+
+.payroll-btn:disabled {
+    opacity: .55;
+    cursor: not-allowed;
+}
+
+.payroll-btn-primary {
+    background: #ff7900;
+    border-color: #ff7900;
+    color: #fff;
+}
+
+.payroll-btn-primary:hover:not(:disabled) {
+    background: #e66d00;
+}
+
+.payroll-btn-light {
+    background: #fff1e6;
+    border-color: #fff1e6;
+    color: #e66d00;
+    margin-top: 10px;
+}
+
+.payroll-btn-light:hover:not(:disabled) {
+    background: #ffe3ce;
+}
+
+.payroll-icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 8px;
+    background: #f4f4f4;
+    color: #555;
+    cursor: pointer;
+}
+
+.payroll-icon-btn:hover {
+    background: #ebebeb;
+}
+
+.payroll-icon-danger {
+    color: #c62828;
+}
+
+
+/* =========================================
+   FORMULAIRES
+========================================= */
+
+.payroll-form-card {
+    max-width: 560px;
+    padding: 22px;
+}
+
+.payroll-form-card h3 {
+    margin: 0 0 18px;
+    font-size: 17px;
+    color: #222;
+}
+
+.payroll-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 14px;
+}
+
+.payroll-field label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #444;
+}
+
+.payroll-field input,
+.payroll-field select {
+    padding: 10px 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 9px;
+    font-family: inherit;
+    font-size: 14px;
+    color: #333;
+    background: #fff;
+    outline: none;
+}
+
+.payroll-field input:focus,
+.payroll-field select:focus,
+.payroll-table-small input:focus {
+    border-color: #ff7900;
+    box-shadow: 0 0 0 3px rgba(255, 121, 0, .12);
+}
+
+.payroll-field small {
+    color: #999;
+    font-size: 12px;
+}
+
+.payroll-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+.payroll-checks {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+    margin-bottom: 14px;
+}
+
+.payroll-checks label {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 13px;
+    color: #444;
+}
+
+.payroll-subtitle {
+    margin: 6px 0 10px;
+    font-size: 14px;
+    color: #222;
+}
+
+.payroll-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 14px;
+    margin-top: 6px;
+}
+
+.payroll-saved {
+    color: #16803c;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+
+/* =========================================
+   MODALE
+========================================= */
+
+.payroll-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(0, 0, 0, .4);
+}
+
+.payroll-modal {
+    width: 100%;
+    max-width: 560px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.payroll-modal-wide {
+    max-width: 720px;
+}
+
+.payroll-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.payroll-modal-header h3 {
+    margin: 0;
+    font-size: 17px;
+    color: #222;
+}
+
+.payroll-modal-body {
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.payroll-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid #f0f0f0;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 700px) {
+
+    .payroll-page {
+        padding: 16px;
+    }
+
+    .payroll-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .payroll-grid-2 {
+        grid-template-columns: 1fr;
+    }
+
+}
