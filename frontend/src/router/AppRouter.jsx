@@ -20,6 +20,19 @@ import PayrollSlips from "../pages/payroll/PayrollSlips";
 import PayrollSlipDetail from "../pages/payroll/PayrollSlipDetail";
 import PayrollSlipPrint from "../pages/payroll/PayrollSlipPrint";
 import Company from "../pages/company/Company";
+import Clients from "../pages/Clients/clients";
+import Quotes from "../pages/quotes/Quotes";
+import QuoteDetail from "../pages/quotes/QuoteDetail";
+import Invoices from "../pages/invoices/Invoices";
+import InvoiceDetail from "../pages/invoices/InvoiceDetail";
+import Markets from "../pages/markets/Markets";
+import MarketDetail from "../pages/markets/MarketDetail";
+import Expenses from "../pages/expenses/Expenses";
+import ExpenseDetail from "../pages/expenses/ExpenseDetail";
+import Budget from "../pages/Budget/Budget";
+import AuditLogs from "../pages/AuditLogs";
+
+
 // =====================================================
 // PAGE PROTÉGÉE + DASHBOARD LAYOUT
 // =====================================================
@@ -187,6 +200,8 @@ const AppRouter = () => {
                         </Page>
                     }
                 />
+
+
                 {/* ==============================
                     ENTREPRISE
                 ============================== */}
@@ -196,6 +211,140 @@ const AppRouter = () => {
                     element={
                         <Page>
                             <Company />
+                        </Page>
+                    }
+                />
+
+
+                {/* ==============================
+                    CLIENTS
+                ============================== */}
+
+                <Route
+                    path="/clients"
+                    element={
+                        <Page>
+                            <Clients />
+                        </Page>
+                    }
+                />
+
+
+                {/* ==============================
+                    DEVIS
+                ============================== */}
+
+                <Route
+                    path="/devis"
+                    element={
+                        <Page>
+                            <Quotes />
+                        </Page>
+                    }
+                />
+
+                <Route
+                    path="/devis/:id"
+                    element={
+                        <Page>
+                            <QuoteDetail />
+                        </Page>
+                    }
+                />
+
+
+                {/* ==============================
+                    FACTURES
+                ============================== */}
+
+                <Route
+                    path="/factures"
+                    element={
+                        <Page>
+                            <Invoices />
+                        </Page>
+                    }
+                />
+
+                <Route
+                    path="/factures/:id"
+                    element={
+                        <Page>
+                            <InvoiceDetail />
+                        </Page>
+                    }
+                />
+
+
+                {/* ==============================
+                    MARCHÉS
+                ============================== */}
+
+                <Route
+                    path="/marches"
+                    element={
+                        <Page>
+                            <Markets />
+                        </Page>
+                    }
+                />
+
+                <Route
+                    path="/marches/:id"
+                    element={
+                        <Page>
+                            <MarketDetail />
+                        </Page>
+                    }
+                />
+
+
+                {/* ==============================
+                    DÉPENSES
+                ============================== */}
+
+                <Route
+                    path="/depenses"
+                    element={
+                        <Page>
+                            <Expenses />
+                        </Page>
+                    }
+                />
+
+                <Route
+                    path="/depenses/:id"
+                    element={
+                        <Page>
+                            <ExpenseDetail />
+                        </Page>
+                    }
+                />
+
+
+                {/* ==============================
+                    BUDGET
+                ============================== */}
+
+                <Route
+                    path="/budget"
+                    element={
+                        <Page>
+                            <Budget />
+                        </Page>
+                    }
+                />
+
+
+                {/* ==============================
+                    JOURNAL D'AUDIT
+                ============================== */}
+
+                <Route
+                    path="/audit"
+                    element={
+                        <Page>
+                            <AuditLogs />
                         </Page>
                     }
                 />

@@ -1,0 +1,120 @@
+.quick-actions {
+    min-width: 0;
+    padding: 20px;
+    background: #ffffff;
+    border: 1px solid #e6edf5;
+    border-radius: 9px;
+    box-shadow: 0 2px 8px rgba(30, 58, 95, 0.035);
+}
+
+.quick-actions-title {
+    margin: 0 0 14px;
+    color: #172b4d;
+    font-size: 16px;
+    font-weight: 750;
+    line-height: 1.4;
+    letter-spacing: -0.2px;
+}
+
+.quick-actions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.quick-action-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 8px 12px;
+    color: #172b4d;
+    text-align: left;
+    background: #f8fafc;
+    border: 1px solid #edf2f7;
+    border-radius: 7px;
+    cursor: pointer;
+    font: inherit;
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.quick-action-item:hover {
+    background: #ffffff;
+    border-color: #d8e3f0;
+    transform: translateX(2px);
+}
+
+.quick-action-item:focus-visible {
+    outline: 2px solid #ff7900;
+    outline-offset: 2px;
+}
+
+.quick-action-icon {
+    display: flex;
+    flex: 0 0 30px;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+}
+
+.quick-action-icon svg {
+    width: 17px;
+    height: 17px;
+    stroke-width: 2.2;
+}
+
+.quick-action-icon.orange {
+    color: #ffffff;
+    background: #ff9a3d;
+}
+
+.quick-action-icon.blue {
+    color: #ffffff;
+    background: #1d8cf8;
+}
+
+.quick-action-icon.green {
+    color: #ffffff;
+    background: #19b57f;
+}
+
+.quick-action-icon.purple {
+    color: #ffffff;
+    background: #8b5cf6;
+}
+
+.quick-action-icon.teal {
+    color: #ffffff;
+    background: #14b8a6;
+}
+
+.quick-action-label {
+    flex: 1;
+    min-width: 0;
+    font-size: 12.5px;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.quick-action-arrow {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    color: #71829e;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .quick-action-item,
+    .quick-action-item:hover {
+        transition: none;
+        transform: none;
+    }
+}

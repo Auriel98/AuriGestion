@@ -102,6 +102,15 @@ export default function PayrollSlipDetail() {
     (line) => line.category === "employer_contribution"
   );
 
+  /*
+   * Composants proposés dans la modale :
+   * uniquement ceux de la catégorie choisie
+   * (gain → earning, retenue → deduction).
+   */
+  const availableComponents = components.filter(
+    (component) => component.category === form.category
+  );
+
   const openAddModal = (category) => {
     setEditingLine(null);
 
@@ -554,7 +563,9 @@ export default function PayrollSlipDetail() {
                 <h2>
                   {editingLine
                     ? "Modifier la ligne"
-                    : "Ajouter une ligne"}
+                    : form.category === "deduction"
+                    ? "Ajouter une retenue"
+                    : "Ajouter un gain"}
                 </h2>
 
                 <p>
@@ -588,22 +599,14 @@ export default function PayrollSlipDetail() {
                     Sélectionner un composant
                   </option>
 
-                  {components
-                    .filter(
-                      (component) =>
-                        component.category ===
-                          "earning" ||
-                        component.category ===
-                          "deduction"
-                    )
-                    .map((component) => (
-                      <option
-                        key={component.id}
-                        value={component.id}
-                      >
-                        {component.name}
-                      </option>
-                    ))}
+                  {availableComponents.map((component) => (
+                    <option
+                      key={component.id}
+                      value={component.id}
+                    >
+                      {component.name}
+                    </option>
+                  ))}
                 </select>
               </div>
 
@@ -650,8 +653,12 @@ export default function PayrollSlipDetail() {
                     onChange={(event) =>
                       setForm((prev) => ({
                         ...prev,
-                        category:
-                          event.target.value,
+                        category: event.target.value,
+                        component_id: "",
+                        designation: "",
+                        code: "",
+                        base_amount: 0,
+                        rate: "",
                       }))
                     }
                   >

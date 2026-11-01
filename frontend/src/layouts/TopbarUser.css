@@ -1,0 +1,163 @@
+/* =========================================
+   UTILISATEUR DANS LE HEADER
+========================================= */
+
+.topbar-user {
+    position: relative;
+}
+
+.topbar-user-btn {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 5px 9px 5px 5px;
+
+    border: 1px solid transparent;
+
+    border-radius: 9px;
+
+    background: transparent;
+
+    color: inherit;
+
+    text-align: left;
+
+    cursor: pointer;
+}
+
+.topbar-user-btn:hover,
+.topbar-user-btn[aria-expanded="true"] {
+    background: #fafafa;
+
+    border-color: #e7e7e7;
+}
+
+.topbar-user-btn > svg {
+    color: #888888;
+}
+
+.topbar-user-text strong {
+    display: block;
+
+    font-size: 12px;
+}
+
+.topbar-user-text span {
+    display: block;
+
+    margin-top: 2px;
+
+    font-size: 10px;
+
+    color: #999999;
+
+    text-transform: capitalize;
+}
+
+
+/* =========================================
+   MENU DÉROULANT
+========================================= */
+
+.topbar-menu {
+    position: absolute;
+
+    right: 0;
+    top: calc(100% + 8px);
+
+    z-index: 100;
+
+    width: 220px;
+
+    padding: 6px;
+
+    background: #ffffff;
+
+    border: 1px solid #e7e7e7;
+
+    border-radius: 9px;
+
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+}
+
+.topbar-menu-head {
+    padding: 10px 10px 9px;
+
+    margin-bottom: 6px;
+
+    border-bottom: 1px solid #eeeeee;
+}
+
+.topbar-menu-head strong {
+    display: block;
+
+    font-size: 13px;
+}
+
+.topbar-menu-head span {
+    display: block;
+
+    margin-top: 2px;
+
+    font-size: 11px;
+
+    color: #999999;
+
+    text-transform: capitalize;
+}
+
+.topbar-menu button {
+    width: 100%;
+
+    height: 38px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 0 10px;
+
+    border: none;
+
+    border-radius: 7px;
+
+    background: transparent;
+
+    color: #555555;
+
+    font-size: 13px;
+
+    text-align: left;
+
+    cursor: pointer;
+}
+
+.topbar-menu button:hover {
+    background: #fff1e4;
+
+    color: #f68b1e;
+}
+
+.topbar-menu button.danger {
+    color: #c0392b;
+}
+
+.topbar-menu button.danger:hover {
+    background: #fdecec;
+
+    color: #c0392b;
+}
+
+
+/* MOBILE : on garde seulement la photo */
+
+@media (max-width: 640px) {
+    .topbar-user-text {
+        display: none;
+    }
+}

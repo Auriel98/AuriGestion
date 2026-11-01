@@ -1,0 +1,311 @@
+.statistics-cards {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+    width: 100%;
+    margin-bottom: 22px;
+}
+
+.statistic-card {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    min-width: 0;
+    min-height: 130px;
+    padding: 18px;
+    overflow: hidden;
+    background: #ffffff;
+    border: 1px solid #e6edf5;
+    border-radius: 9px;
+    box-shadow: 0 2px 8px rgba(30, 58, 95, 0.035);
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.statistic-card:hover {
+    transform: translateY(-2px);
+    border-color: #d8e3f0;
+    box-shadow: 0 5px 16px rgba(30, 58, 95, 0.07);
+}
+
+/* Icône */
+
+.statistic-card-icon {
+    display: flex;
+    flex: 0 0 54px;
+    align-items: center;
+    justify-content: center;
+    width: 54px;
+    height: 54px;
+    border-radius: 15px;
+}
+
+.statistic-card-icon svg {
+    width: 28px;
+    height: 28px;
+    stroke-width: 2.2;
+}
+
+.statistic-card-icon.orange {
+    color: #ff7900;
+    background: #fff0df;
+}
+
+.statistic-card-icon.blue {
+    color: #087cf0;
+    background: #dceeff;
+}
+
+.statistic-card-icon.green {
+    color: #05ae78;
+    background: #d9faec;
+}
+
+.statistic-card-icon.purple {
+    color: #8250df;
+    background: #eee4ff;
+}
+
+/* Contenu */
+
+.statistic-card-content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-width: 0;
+    padding-top: 2px;
+}
+
+.statistic-card-label {
+    margin: 0 0 8px;
+    color: #71829e;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.4;
+}
+
+.statistic-card-value {
+    margin: 0;
+    color: #172b4d;
+    font-size: 25px;
+    font-weight: 750;
+    line-height: 1.2;
+    letter-spacing: -0.5px;
+    overflow-wrap: anywhere;
+}
+
+.statistic-card-value.currency {
+    font-size: 19px;
+    letter-spacing: -0.4px;
+}
+
+/* Évolution mensuelle */
+
+.statistic-card-trend {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 12px;
+    color: #08b981;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.statistic-card-trend svg {
+    flex-shrink: 0;
+    width: 14px;
+    height: 14px;
+    stroke-width: 2.6;
+}
+
+.statistic-card-trend.negative {
+    color: #e5484d;
+}
+
+/* Texte complémentaire */
+
+.statistic-card-subtitle {
+    margin-top: 10px;
+    color: #71829e;
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+/* Cercle de progression des présences */
+
+.statistic-card-progress {
+    position: relative;
+    display: flex;
+    flex: 0 0 64px;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    margin: auto 0;
+    border-radius: 50%;
+    background: conic-gradient(
+        #0dbb83 var(--progress, 0%),
+        #e9f5ef var(--progress, 0%)
+    );
+}
+
+.statistic-card-progress::before {
+    position: absolute;
+    width: 48px;
+    height: 48px;
+    content: "";
+    background: #ffffff;
+    border-radius: 50%;
+}
+
+.statistic-card-progress span {
+    position: relative;
+    z-index: 1;
+    color: #07976d;
+    font-size: 11px;
+    font-weight: 750;
+}
+
+/* Chargement */
+
+.statistics-loading {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+    width: 100%;
+    margin-bottom: 22px;
+}
+
+.statistics-loading-card {
+    min-height: 130px;
+    background: linear-gradient(90deg, #ffffff 25%, #f3f6fa 50%, #ffffff 75%);
+    background-size: 200% 100%;
+    border: 1px solid #e6edf5;
+    border-radius: 9px;
+    animation: statistics-loading-animation 1.5s infinite linear;
+}
+
+@keyframes statistics-loading-animation {
+    from {
+        background-position: 100% 0;
+    }
+
+    to {
+        background-position: -100% 0;
+    }
+}
+
+/* Message d'erreur */
+
+.statistics-error {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 18px;
+    margin-bottom: 22px;
+    color: #b42318;
+    background: #fff5f4;
+    border: 1px solid #fecdca;
+    border-radius: 9px;
+    font-size: 13px;
+}
+
+.statistics-error button {
+    padding: 8px 13px;
+    color: #ffffff;
+    background: #e5484d;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font: inherit;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: background 0.2s ease;
+}
+
+.statistics-error button:hover {
+    background: #c83238;
+}
+
+/* Tablettes */
+
+@media (max-width: 1200px) {
+    .statistics-cards,
+    .statistics-loading {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+    }
+
+    .statistic-card {
+        min-height: 125px;
+    }
+}
+
+/* Mobiles */
+
+@media (max-width: 600px) {
+    .statistics-cards,
+    .statistics-loading {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        margin-bottom: 18px;
+    }
+
+    .statistic-card {
+        min-height: 112px;
+        padding: 16px;
+        gap: 15px;
+    }
+
+    .statistic-card-icon {
+        flex-basis: 48px;
+        width: 48px;
+        height: 48px;
+        border-radius: 13px;
+    }
+
+    .statistic-card-icon svg {
+        width: 25px;
+        height: 25px;
+    }
+
+    .statistic-card-value {
+        font-size: 23px;
+    }
+
+    .statistic-card-value.currency {
+        font-size: 18px;
+    }
+
+    .statistic-card-progress {
+        flex-basis: 56px;
+        width: 56px;
+        height: 56px;
+    }
+
+    .statistic-card-progress::before {
+        width: 42px;
+        height: 42px;
+    }
+
+    .statistics-loading-card {
+        min-height: 112px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .statistic-card,
+    .statistic-card:hover {
+        transition: none;
+        transform: none;
+    }
+
+    .statistics-loading-card {
+        animation: none;
+    }
+}

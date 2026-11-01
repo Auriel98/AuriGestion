@@ -1,0 +1,177 @@
+
+.dashboard-page {
+    width: 100%;
+    min-width: 0;
+    min-height: 100%;
+    color: #172b4d;
+    font-family: inherit;
+}
+
+.dashboard-page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.dashboard-heading {
+    min-width: 0;
+}
+
+.dashboard-page-title {
+    margin: 0;
+    color: #172b4d;
+    font-size: 24px;
+    font-weight: 750;
+    line-height: 1.35;
+    letter-spacing: -0.4px;
+}
+
+.dashboard-page-description {
+    margin: 5px 0 0;
+    color: #71829e;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1.6;
+}
+
+.dashboard-statistics-section {
+    width: 100%;
+    min-width: 0;
+}
+
+.dashboard-statistics-section > * {
+    min-width: 0;
+}
+
+/* ========================================
+   GRILLE PRINCIPALE DU TABLEAU DE BORD
+======================================== */
+
+.dashboard-main-grid {
+    display: grid;
+    grid-template-columns:
+        minmax(0, 1.7fr)
+        minmax(0, 1.1fr)
+        minmax(260px, 0.9fr);
+    gap: 18px;
+    width: 100%;
+    margin-bottom: 22px;
+}
+
+/* Évolution des effectifs */
+.dashboard-workforce-area {
+    grid-column: 1;
+    min-width: 0;
+}
+
+/* Répartition des employés par service */
+.dashboard-distribution-area {
+    grid-column: 2;
+    min-width: 0;
+}
+
+/* Actions rapides */
+.dashboard-quick-actions-area {
+    grid-column: 3;
+    min-width: 0;
+}
+
+/* ========================================
+   GRILLE INFÉRIEURE DU TABLEAU DE BORD
+======================================== */
+
+.dashboard-bottom-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+    width: 100%;
+    margin-bottom: 22px;
+}
+
+/* Activités récentes */
+.dashboard-activities-area {
+    grid-column: 1;
+    min-width: 0;
+}
+
+/* Employés récemment ajoutés */
+.dashboard-latest-employees-area {
+    grid-column: 2;
+    min-width: 0;
+}
+
+/* Échéances et rappels */
+.dashboard-deadlines-area {
+    grid-column: 3;
+    min-width: 0;
+}
+
+/* ========================================
+   RESPONSIVE : TABLETTES ET PETITS ÉCRANS
+======================================== */
+
+@media (max-width: 1200px) {
+    .dashboard-main-grid,
+    .dashboard-bottom-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-workforce-area,
+    .dashboard-distribution-area,
+    .dashboard-quick-actions-area,
+    .dashboard-activities-area,
+    .dashboard-latest-employees-area,
+    .dashboard-deadlines-area {
+        grid-column: auto;
+    }
+}
+
+/* ========================================
+   RESPONSIVE : TÉLÉPHONES
+======================================== */
+
+@media (max-width: 768px) {
+    .dashboard-page-header {
+        margin-bottom: 18px;
+        gap: 12px;
+    }
+
+    .dashboard-page-title {
+        font-size: 22px;
+    }
+
+    .dashboard-page-description {
+        font-size: 12px;
+    }
+
+    .dashboard-main-grid,
+    .dashboard-bottom-grid {
+        gap: 14px;
+        margin-bottom: 18px;
+    }
+}
+
+/* ========================================
+   RESPONSIVE : PETITS TÉLÉPHONES
+======================================== */
+
+@media (max-width: 480px) {
+    .dashboard-page-title {
+        font-size: 20px;
+    }
+
+    .dashboard-page-description {
+        font-size: 12px;
+    }
+
+    .dashboard-page-header {
+        gap: 10px;
+    }
+
+    .dashboard-main-grid,
+    .dashboard-bottom-grid {
+        gap: 12px;
+    }
+}

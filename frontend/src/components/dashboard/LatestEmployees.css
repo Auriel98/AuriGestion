@@ -1,0 +1,185 @@
+.latest-employees {
+    min-width: 0;
+    padding: 20px;
+    background: #ffffff;
+    border: 1px solid #e6edf5;
+    border-radius: 9px;
+    box-shadow: 0 2px 8px rgba(30, 58, 95, 0.035);
+}
+
+.latest-employees-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.latest-employees-title {
+    margin: 0;
+    color: #172b4d;
+    font-size: 16px;
+    font-weight: 750;
+    line-height: 1.4;
+    letter-spacing: -0.2px;
+}
+
+.latest-employees-link {
+    color: #ff7900;
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: underline;
+    white-space: nowrap;
+}
+
+.latest-employees-link:hover {
+    color: #e56d00;
+}
+
+/* Tableau */
+
+.latest-employees-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.latest-employees-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.latest-employees-table th {
+    padding: 9px 8px;
+    color: #71829e;
+    font-size: 11px;
+    font-weight: 500;
+    text-align: left;
+    background: #f8fafc;
+    white-space: nowrap;
+}
+
+.latest-employees-table td {
+    padding: 10px 8px;
+    color: #4a5b78;
+    font-size: 11.5px;
+    border-bottom: 1px solid #eef2f7;
+    vertical-align: middle;
+}
+
+.latest-employees-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.latest-employees-table tbody tr:hover {
+    background: #fafcff;
+}
+
+/* Identité */
+
+.latest-employee-identity {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+}
+
+.latest-employee-avatar {
+    display: flex;
+    flex: 0 0 30px;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.latest-employee-avatar.initials {
+    color: #ff7900;
+    font-size: 11px;
+    font-weight: 700;
+    background: #fff0df;
+}
+
+.latest-employee-name {
+    color: #172b4d;
+    font-size: 12px;
+    font-weight: 650;
+    white-space: nowrap;
+}
+
+.latest-employee-position,
+.latest-employee-date {
+    white-space: nowrap;
+}
+
+/* Menu d'actions */
+
+.latest-employee-actions {
+    width: 32px;
+    text-align: right;
+}
+
+.latest-employee-menu {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    padding: 0;
+    color: #71829e;
+    background: transparent;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.latest-employee-menu:hover {
+    background: #eef2f7;
+}
+
+.latest-employee-menu svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* États (chargement, erreur, vide) */
+
+.latest-employees-state {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    min-height: 150px;
+    padding: 16px;
+    color: #71829e;
+    font-size: 12.5px;
+    text-align: center;
+}
+
+.latest-employees-state.error {
+    flex-direction: column;
+    color: #b42318;
+}
+
+.latest-employees-state.error button {
+    padding: 7px 12px;
+    color: #ffffff;
+    font: inherit;
+    font-weight: 600;
+    background: #e5484d;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.latest-employees-state.error button:hover {
+    background: #c83238;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .latest-employee-menu {
+        transition: none;
+    }
+}

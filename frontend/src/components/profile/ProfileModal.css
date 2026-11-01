@@ -1,0 +1,504 @@
+/* =========================================
+   BOUTON PROFIL DANS LA SIDEBAR
+========================================= */
+
+.sidebar-user .sidebar-user-profile {
+    flex: 1;
+
+    min-width: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    padding: 5px;
+
+    border: none;
+
+    border-radius: 9px;
+
+    background: transparent;
+
+    color: inherit;
+
+    text-align: left;
+
+    cursor: pointer;
+}
+
+.sidebar-user .sidebar-user-profile:hover {
+    background: #fafafa;
+
+    color: inherit;
+}
+
+
+/* =========================================
+   MODAL
+========================================= */
+
+.pm-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 1000;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.pm-modal {
+    width: 100%;
+    max-width: 520px;
+
+    max-height: 92vh;
+
+    overflow-y: auto;
+
+    background: #ffffff;
+
+    border-radius: 12px;
+
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.18);
+}
+
+
+/* ENTÊTE */
+
+.pm-header {
+    display: flex;
+
+    align-items: flex-start;
+
+    justify-content: space-between;
+
+    padding: 20px 24px;
+
+    border-bottom: 1px solid #e7e7e7;
+}
+
+.pm-header h2 {
+    margin: 0;
+
+    font-size: 18px;
+}
+
+.pm-header p {
+    margin: 4px 0 0;
+
+    font-size: 12px;
+
+    color: #999999;
+}
+
+.pm-close {
+    display: flex;
+
+    padding: 6px;
+
+    border: none;
+
+    border-radius: 7px;
+
+    background: transparent;
+
+    color: #888888;
+
+    cursor: pointer;
+}
+
+.pm-close:hover {
+    background: #fafafa;
+
+    color: #f68b1e;
+}
+
+.pm-body {
+    padding: 22px 24px 24px;
+}
+
+.pm-loading {
+    padding: 40px 24px;
+
+    text-align: center;
+
+    font-size: 13px;
+
+    color: #999999;
+}
+
+
+/* IDENTITÉ + PHOTO */
+
+.pm-identity {
+    display: flex;
+
+    align-items: center;
+
+    gap: 16px;
+
+    margin-bottom: 20px;
+}
+
+.pm-avatar {
+    width: 76px;
+    height: 76px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    overflow: hidden;
+
+    background: #f68b1e;
+
+    color: #ffffff;
+
+    font-size: 26px;
+
+    font-weight: 700;
+}
+
+.pm-avatar img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+.pm-identity-info {
+    min-width: 0;
+}
+
+.pm-identity-info strong {
+    display: block;
+
+    font-size: 15px;
+}
+
+.pm-identity-info > span {
+    display: block;
+
+    margin-top: 3px;
+
+    font-size: 12px;
+
+    color: #999999;
+
+    text-transform: capitalize;
+}
+
+.pm-photo-actions {
+    display: flex;
+
+    gap: 8px;
+
+    margin-top: 10px;
+}
+
+
+/* ONGLETS */
+
+.pm-tabs {
+    display: flex;
+
+    gap: 6px;
+
+    margin-bottom: 18px;
+
+    border-bottom: 1px solid #eeeeee;
+}
+
+.pm-tab {
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    padding: 10px 12px;
+
+    border: none;
+
+    border-bottom: 2px solid transparent;
+
+    background: transparent;
+
+    color: #555555;
+
+    font-size: 13px;
+
+    cursor: pointer;
+}
+
+.pm-tab:hover {
+    color: #f68b1e;
+}
+
+.pm-tab.active {
+    border-bottom-color: #f68b1e;
+
+    color: #f68b1e;
+
+    font-weight: 600;
+}
+
+
+/* MESSAGES */
+
+.pm-feedback {
+    margin-bottom: 16px;
+
+    padding: 10px 12px;
+
+    border-radius: 7px;
+
+    font-size: 12px;
+}
+
+.pm-feedback.success {
+    background: #eaf7ee;
+
+    color: #1f7a3d;
+}
+
+.pm-feedback.error {
+    background: #fdecec;
+
+    color: #c0392b;
+}
+
+
+/* CHAMPS */
+
+.pm-grid {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 0 14px;
+}
+
+.pm-field {
+    margin-bottom: 14px;
+}
+
+.pm-field label {
+    display: block;
+
+    margin-bottom: 6px;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    color: #555555;
+}
+
+.pm-field input {
+    width: 100%;
+
+    height: 40px;
+
+    padding: 0 12px;
+
+    border: 1px solid #e7e7e7;
+
+    border-radius: 7px;
+
+    background: #ffffff;
+
+    font-size: 13px;
+
+    outline: none;
+
+    box-sizing: border-box;
+}
+
+.pm-field input:focus {
+    border-color: #f68b1e;
+
+    box-shadow: 0 0 0 3px rgba(246, 139, 30, 0.12);
+}
+
+.pm-field input:disabled {
+    background: #fafafa;
+
+    color: #999999;
+
+    cursor: not-allowed;
+}
+
+.pm-hint {
+    margin: 4px 0 0;
+
+    font-size: 11px;
+
+    color: #999999;
+}
+
+.pm-toggle {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    padding: 0;
+
+    border: none;
+
+    background: transparent;
+
+    color: #888888;
+
+    font-size: 12px;
+
+    cursor: pointer;
+}
+
+.pm-toggle:hover {
+    color: #f68b1e;
+}
+
+
+/* BOUTONS */
+
+.pm-actions {
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 10px;
+
+    margin-top: 22px;
+}
+
+.pm-btn-primary,
+.pm-btn-secondary,
+.pm-btn-light,
+.pm-btn-danger {
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 6px;
+
+    border-radius: 7px;
+
+    font-size: 13px;
+
+    cursor: pointer;
+}
+
+.pm-btn-primary {
+    height: 40px;
+
+    padding: 0 18px;
+
+    border: none;
+
+    background: #f68b1e;
+
+    color: #ffffff;
+
+    font-weight: 600;
+}
+
+.pm-btn-primary:hover:not(:disabled) {
+    opacity: 0.9;
+}
+
+.pm-btn-secondary {
+    height: 40px;
+
+    padding: 0 18px;
+
+    border: 1px solid #e7e7e7;
+
+    background: #ffffff;
+
+    color: #555555;
+}
+
+.pm-btn-secondary:hover {
+    background: #fafafa;
+}
+
+.pm-btn-light {
+    height: 32px;
+
+    padding: 0 12px;
+
+    border: none;
+
+    background: #fff1e4;
+
+    color: #f68b1e;
+
+    font-size: 12px;
+
+    font-weight: 600;
+}
+
+.pm-btn-light:hover:not(:disabled) {
+    background: #ffe6cf;
+}
+
+.pm-btn-danger {
+    width: 32px;
+    height: 32px;
+
+    border: 1px solid #e7e7e7;
+
+    background: #ffffff;
+
+    color: #c0392b;
+}
+
+.pm-btn-danger:hover:not(:disabled) {
+    background: #fdecec;
+}
+
+.pm-btn-primary:disabled,
+.pm-btn-light:disabled,
+.pm-btn-danger:disabled {
+    opacity: 0.6;
+
+    cursor: not-allowed;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 560px) {
+    .pm-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .pm-identity {
+        flex-direction: column;
+
+        text-align: center;
+    }
+
+    .pm-photo-actions {
+        justify-content: center;
+    }
+}

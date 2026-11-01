@@ -569,7 +569,7 @@ export default function PayrollSettings() {
                         )}
 
                         {component.tcs_subject && (
-                          <span>TCS</span>
+                          <span>TCSS</span>
                         )}
                       </div>
                     </td>
@@ -650,10 +650,10 @@ export default function PayrollSettings() {
                   <tr key={rule.id}>
 
                     <td>
-                      <strong>{rule.code}</strong>
+                      <strong>{rule.code === "TCS" ? "TCSS" : rule.code}</strong>
                     </td>
 
-                    <td>{rule.name}</td>
+                    <td>{rule.name.replace("TCS", "TCSS")}</td>
 
                     <td>
                       {rule.employee_rate ?? 0} %

@@ -1,167 +1,74 @@
-import {
-    Users,
-    FileText,
-    CalendarCheck,
-    Wallet,
-} from "lucide-react";
-
-import {
-    useAuth,
-} from "../context/AuthContext";
-
+import { useAuth } from "../context/AuthContext";
+import StatisticsCards from "../components/dashboard/StatisticsCards";
+import WorkforceEvolution from "../components/dashboard/WorkforceEvolution";
+import DepartmentDistribution from "../components/dashboard/DepartmentDistribution";
+import QuickActions from "../components/dashboard/QuickActions";
+import RecentActivities from "../components/dashboard/RecentActivities";
+import LatestEmployees from "../components/dashboard/LatestEmployees";
+import UpcomingDeadlines from "../components/dashboard/UpcomingDeadlines";
+import "./Dashboard.css";
 
 const Dashboard = () => {
+    const { user } = useAuth();
 
-    const {
-        user,
-    } = useAuth();
-
-
-    const cards = [
-        {
-            title: "Employés",
-            value: "0",
-            icon: Users,
-        },
-
-        {
-            title: "Contrats actifs",
-            value: "0",
-            icon: FileText,
-        },
-
-        {
-            title: "Présences aujourd'hui",
-            value: "0",
-            icon: CalendarCheck,
-        },
-
-        {
-            title: "Masse salariale",
-            value: "0 FCFA",
-            icon: Wallet,
-        },
-    ];
-
+    const firstName = user?.first_name || "Admin";
+    const companyName = user?.company_name || "votre entreprise";
 
     return (
+        <main className="dashboard-page">
+            <div className="dashboard-page-header">
+                <div className="dashboard-heading">
+                    
 
-        <div>
-
-            <div
-                style={{
-                    marginBottom: "28px",
-                }}
-            >
-
-                <h2
-                    style={{
-                        margin: 0,
-                        fontSize: "20px",
-                    }}
-                >
-                    Bonjour {user?.first_name}
-                </h2>
-
-                <p
-                    style={{
-                        color: "#888",
-                        fontSize: "13px",
-                    }}
-                >
-                    Voici un aperçu de
-                    l'activité de{" "}
-                    {user?.company_name}.
-                </p>
-
+                    <p className="dashboard-page-description">
+                        Bonjour {firstName}, voici un aperçu de l'activité de{" "}
+                        {companyName}.
+                    </p>
+                </div>
             </div>
 
-
-            <div
-                style={{
-                    display: "grid",
-                    gridTemplateColumns:
-                        "repeat(4, 1fr)",
-                    gap: "18px",
-                }}
+            <section
+                className="dashboard-statistics-section"
+                aria-label="Statistiques de l'entreprise"
             >
+                <StatisticsCards />
+            </section>
 
-                {cards.map((card) => {
+            <section
+                className="dashboard-main-grid"
+                aria-label="Vue d'ensemble"
+            >
+                <div className="dashboard-workforce-area">
+                    <WorkforceEvolution />
+                </div>
 
-                    const Icon =
-                        card.icon;
+                <div className="dashboard-distribution-area">
+                    <DepartmentDistribution />
+                </div>
 
+                <div className="dashboard-quick-actions-area">
+                    <QuickActions />
+                </div>
+            </section>
 
-                    return (
+            <section
+                className="dashboard-bottom-grid"
+                aria-label="Activités et suivi"
+            >
+                <div className="dashboard-activities-area">
+                    <RecentActivities />
+                </div>
 
-                        <div
-                            key={card.title}
-                            style={{
-                                background:
-                                    "#ffffff",
-                                borderRadius:
-                                    "10px",
-                                padding:
-                                    "20px",
-                                border:
-                                    "1px solid #eeeeee",
-                            }}
-                        >
+                <div className="dashboard-latest-employees-area">
+                    <LatestEmployees />
+                </div>
 
-                            <div
-                                style={{
-                                    display: "flex",
-                                    alignItems:
-                                        "center",
-                                    justifyContent:
-                                        "space-between",
-                                }}
-                            >
-
-                                <span
-                                    style={{
-                                        fontSize:
-                                            "12px",
-                                        color:
-                                            "#888",
-                                    }}
-                                >
-                                    {card.title}
-                                </span>
-
-
-                                <Icon
-                                    size={20}
-                                    color="#f68b1e"
-                                />
-
-                            </div>
-
-
-                            <strong
-                                style={{
-                                    display:
-                                        "block",
-                                    marginTop:
-                                        "14px",
-                                    fontSize:
-                                        "24px",
-                                }}
-                            >
-                                {card.value}
-                            </strong>
-
-                        </div>
-
-                    );
-
-                })}
-
-            </div>
-
-        </div>
+                <div className="dashboard-deadlines-area">
+                    <UpcomingDeadlines />
+                </div>
+            </section>
+        </main>
     );
 };
-
 
 export default Dashboard;

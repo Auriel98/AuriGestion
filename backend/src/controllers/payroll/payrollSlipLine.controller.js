@@ -1,5 +1,28 @@
 const pool = require("../../config/db");
 
+/*
+ * ⚠️ Vérifie le chemin et le nom du fichier qui contient calculateSlip.
+ */
+const { calculateSlip } = require("../../service/payroll/payrollCalculation.service");
+/**
+ * Seul un bulletin / une période en brouillon reste modifiable.
+ * Une fois "calculated" (bouton Calculer), plus de modification.
+ */
+const EDITABLE_STATUSES = ["draft"];
+
+const MANUAL_CATEGORIES = ["earning", "deduction", "information"];
+
+/* =====================================================
+   OUTILS
+===================================================== */
+
+const round2 = (value) => Math.round(Number(value || 0) * 100) / 100;
+
+const toRate = (rate) =>
+    rate === null || rate === undefined || rate === ""
+        ? null
+        : Number(rate);
+
 /**
  * Vérifie que le bulletin existe et qu'il peut encore être modifié.
  */
@@ -25,8 +48,8 @@ const getEditableSlip = async (client, slipId, companyId) => {
     const slip = result.rows[0];
 
     if (
-        slip.status !== "draft" ||
-        slip.period_status !== "draft"
+        !EDITABLE_STATUSES.includes(slip.status) ||
+        !EDITABLE_STATUSES.includes(slip.period_status)
     ) {
         throw new Error("SLIP_NOT_EDITABLE");
     }
@@ -34,101 +57,163 @@ const getEditableSlip = async (client, slipId, companyId) => {
     return slip;
 };
 
-
 /**
- * Recalcule les totaux du bulletin
- * à partir de ses lignes.
- *
- * Aucune présence n'est utilisée ici.
+ * Recalcule le bulletin (brut, cotisations, net) SANS le verrouiller.
+ * calculateSlip passe le bulletin en "calculated" : on le remet
+ * en "draft" pour pouvoir continuer à ajouter des lignes.
+ * Le verrouillage se fait uniquement via le bouton "Calculer".
  */
-const recalculateSlipTotals = async (client, slipId) => {
-
-    const result = await client.query(
-        `
-        SELECT
-            COALESCE(
-                SUM(
-                    CASE
-                        WHEN category = 'earning'
-                        THEN gain
-                        ELSE 0
-                    END
-                ),
-                0
-            ) AS gross_salary,
-
-            COALESCE(
-                SUM(
-                    CASE
-                        WHEN category IN ('deduction', 'tax')
-                        THEN deduction
-                        ELSE 0
-                    END
-                ),
-                0
-            ) AS employee_deductions,
-
-            COALESCE(
-                SUM(employer_amount),
-                0
-            ) AS employer_contributions
-
-        FROM payroll_slip_lines
-        WHERE slip_id = $1
-        `,
-        [slipId]
-    );
-
-    const totals = result.rows[0];
-
-    const grossSalary = Number(totals.gross_salary || 0);
-    const employeeDeductions =
-        Number(totals.employee_deductions || 0);
-
-    const employerContributions =
-        Number(totals.employer_contributions || 0);
-
-    const netSalary =
-        grossSalary - employeeDeductions;
+const recalculateKeepDraft = async (client, slipId, companyId) => {
+    const totals = await calculateSlip({ client, slipId, companyId });
 
     await client.query(
         `
         UPDATE payroll_slips
         SET
-            gross_salary = $1,
-            employee_deductions = $2,
-            employer_contributions = $3,
-            net_salary = $4,
-            net_to_pay = $4,
+            status = 'draft',
             updated_at = NOW()
-        WHERE id = $5
+        WHERE id = $1
+          AND company_id = $2
         `,
-        [
-            grossSalary,
-            employeeDeductions,
-            employerContributions,
-            netSalary,
-            slipId
-        ]
+        [slipId, companyId]
     );
 
-    return {
-        gross_salary: grossSalary,
-        employee_deductions: employeeDeductions,
-        employer_contributions: employerContributions,
-        net_salary: netSalary,
-        net_to_pay: netSalary
-    };
+    return totals;
 };
 
+/**
+ * Récupère un composant de paie actif de l'entreprise.
+ */
+const getComponent = async (client, componentId, companyId) => {
+    if (!componentId) return null;
+
+    const result = await client.query(
+        `
+        SELECT
+            id,
+            code,
+            name,
+            category,
+            taxable,
+            cnss_subject,
+            cnamgs_subject,
+            tcs_subject,
+            irpp_subject
+        FROM payroll_components
+        WHERE id = $1
+          AND company_id = $2
+          AND is_active = TRUE
+        LIMIT 1
+        `,
+        [componentId, companyId]
+    );
+
+    if (result.rowCount === 0) {
+        throw new Error("COMPONENT_NOT_FOUND");
+    }
+
+    return result.rows[0];
+};
 
 /**
- * Liste des lignes d'un bulletin
+ * Nombre de jours mensuels (paramètres de paie).
  */
+const getMonthlyDays = async (client, companyId) => {
+    const result = await client.query(
+        `
+        SELECT monthly_work_days
+        FROM payroll_settings
+        WHERE company_id = $1
+        `,
+        [companyId]
+    );
+
+    return Number(result.rows[0]?.monthly_work_days || 30);
+};
+
+/**
+ * Calcule le montant d'une ligne selon son mode de calcul.
+ *
+ * manual / fixed : montant de base (x quantité en manual)
+ * quantity_rate  : quantité x base x taux %
+ * days           : quantité x base / jours du mois
+ */
+const computeAmount = ({ mode, quantity, base, rate, monthlyDays }) => {
+    switch (mode) {
+        case "quantity_rate":
+            return rate !== null
+                ? (quantity * base * rate) / 100
+                : quantity * base;
+
+        case "days":
+            return (quantity * base) / monthlyDays;
+
+        case "fixed":
+            return base;
+
+        case "manual":
+        default:
+            return quantity * base;
+    }
+};
+
+/**
+ * Répartit le montant dans gain ou deduction selon la catégorie.
+ * Si le montant calculé est 0 et que gain / deduction ont été envoyés
+ * explicitement (appel API direct), on les respecte.
+ */
+const splitAmount = ({ category, amount, explicitGain, explicitDeduction }) => {
+    let gain = 0;
+    let deduction = 0;
+
+    if (category === "earning") {
+        gain = amount > 0 ? amount : Number(explicitGain || 0);
+    }
+
+    if (category === "deduction") {
+        deduction = amount > 0 ? amount : Number(explicitDeduction || 0);
+    }
+
+    return { gain: round2(gain), deduction: round2(deduction) };
+};
+
+/**
+ * Convertit les erreurs métier en réponse HTTP.
+ */
+const handleError = (res, error, fallbackMessage) => {
+    const known = {
+        SLIP_NOT_FOUND: [404, "Bulletin introuvable."],
+        SLIP_NOT_EDITABLE: [400, "Ce bulletin n'est plus modifiable."],
+        LINE_NOT_FOUND: [404, "Ligne introuvable."],
+        LINE_AUTOMATIC: [
+            400,
+            "Cette ligne est automatique : elle est recalculée par le système.",
+        ],
+        COMPONENT_NOT_FOUND: [
+            400,
+            "Composant de paie introuvable ou inactif.",
+        ],
+        PAYROLL_SETTINGS_NOT_FOUND: [
+            400,
+            "Les paramètres de paie de l'entreprise sont introuvables.",
+        ],
+    };
+
+    const match = known[error.message];
+
+    if (match) {
+        return res.status(match[0]).json({ message: match[1] });
+    }
+
+    return res.status(500).json({ message: fallbackMessage });
+};
+
+/* =====================================================
+   LISTE DES LIGNES
+===================================================== */
+
 const getLines = async (req, res) => {
-
     try {
-
         const { slipId } = req.params;
 
         const result = await pool.query(
@@ -152,31 +237,25 @@ const getLines = async (req, res) => {
         );
 
         return res.json(result.rows);
-
     } catch (error) {
-
-        console.error(
-            "Erreur récupération lignes bulletin :",
-            error
-        );
+        console.error("Erreur récupération lignes bulletin :", error);
 
         return res.status(500).json({
-            message: "Erreur lors de la récupération des lignes."
+            message: "Erreur lors de la récupération des lignes.",
         });
     }
 };
 
+/* =====================================================
+   AJOUTER UNE LIGNE MANUELLE
+===================================================== */
 
-/**
- * Ajouter une ligne manuelle
- */
 const createLine = async (req, res) => {
-
     const client = await pool.connect();
 
     try {
-
         const { slipId } = req.params;
+        const companyId = req.user.companyId;
 
         const {
             component_id,
@@ -186,149 +265,60 @@ const createLine = async (req, res) => {
             quantity = 1,
             base_amount = 0,
             rate = null,
-            gain = 0,
-            deduction = 0,
+            gain,
+            deduction,
             employer_amount = 0,
             calculation_mode = "manual",
-            notes = null
+            notes = null,
         } = req.body;
 
         if (!designation) {
             return res.status(400).json({
-                message: "La désignation est obligatoire."
+                message: "La désignation est obligatoire.",
             });
         }
 
         if (!category) {
             return res.status(400).json({
-                message: "La catégorie est obligatoire."
+                message: "La catégorie est obligatoire.",
             });
         }
 
-        if (!["earning", "deduction", "information"].includes(category)) {
+        if (!MANUAL_CATEGORIES.includes(category)) {
             return res.status(400).json({
-                message:
-                    "Cette catégorie ne peut pas être ajoutée manuellement."
+                message: "Cette catégorie ne peut pas être ajoutée manuellement.",
             });
         }
 
         await client.query("BEGIN");
 
-        await getEditableSlip(
-            client,
-            slipId,
-            req.user.companyId
-        );
+        await getEditableSlip(client, slipId, companyId);
 
         /*
-         * Récupération du composant de paie.
-         * Ses paramètres sont copiés (figés) sur la ligne :
-         * si le composant change plus tard, les anciens
-         * bulletins gardent les règles d'origine.
+         * Les indicateurs du composant (taxable, cnss_subject...)
+         * sont copiés (figés) sur la ligne.
          */
-        let component = null;
+        const component = await getComponent(client, component_id, companyId);
 
-        if (component_id) {
-
-            const componentResult = await client.query(
-                `
-                SELECT
-                    id,
-                    company_id,
-                    code,
-                    name,
-                    category,
-                    taxable,
-                    cnss_subject,
-                    cnamgs_subject,
-                    tcs_subject,
-                    irpp_subject
-                FROM payroll_components
-                WHERE id = $1
-                  AND company_id = $2
-                  AND is_active = TRUE
-                LIMIT 1
-                `,
-                [
-                    component_id,
-                    req.user.companyId
-                ]
-            );
-
-            if (componentResult.rowCount === 0) {
-                throw new Error("COMPONENT_NOT_FOUND");
-            }
-
-            component = componentResult.rows[0];
-        }
-
-        let finalGain = Number(gain || 0);
-        let finalDeduction = Number(deduction || 0);
+        const monthlyDays = await getMonthlyDays(client, companyId);
 
         const qty = Number(quantity || 0);
         const base = Number(base_amount || 0);
-        const numericRate =
-            rate === null || rate === ""
-                ? null
-                : Number(rate);
 
-        /*
-         * Calcul quantité × base × taux %
-         */
-        if (
-            calculation_mode === "quantity_rate" &&
-            numericRate !== null
-        ) {
-            const amount =
-                qty * base * numericRate / 100;
+        const amount = computeAmount({
+            mode: calculation_mode,
+            quantity: qty,
+            base,
+            rate: toRate(rate),
+            monthlyDays,
+        });
 
-            if (category === "earning") {
-                finalGain = amount;
-            }
-
-            if (category === "deduction") {
-                finalDeduction = amount;
-            }
-        }
-
-        /*
-         * Mode jours
-         *
-         * Exemple :
-         * salaire 150 000
-         * 3 jours
-         * base mensuelle 30 jours
-         *
-         * 3 × 150 000 / 30 = 15 000
-         */
-        if (calculation_mode === "days") {
-
-            const settingsResult = await client.query(
-                `
-                SELECT monthly_work_days
-                FROM payroll_settings
-                WHERE company_id = $1
-                `,
-                [req.user.companyId]
-            );
-
-            const monthlyDays =
-                Number(
-                    settingsResult.rows[0]?.monthly_work_days ||
-                    30
-                );
-
-            const amount =
-                qty * base / monthlyDays;
-
-            if (category === "deduction") {
-                finalDeduction = amount;
-            }
-
-            if (category === "earning") {
-                finalGain = amount;
-            }
-        }
+        const { gain: finalGain, deduction: finalDeduction } = splitAmount({
+            category,
+            amount,
+            explicitGain: gain,
+            explicitDeduction: deduction,
+        });
 
         const maxSortResult = await client.query(
             `
@@ -339,8 +329,7 @@ const createLine = async (req, res) => {
             [slipId]
         );
 
-        const sortOrder =
-            Number(maxSortResult.rows[0].next_sort);
+        const sortOrder = Number(maxSortResult.rows[0].next_sort);
 
         const result = await client.query(
             `
@@ -376,15 +365,13 @@ const createLine = async (req, res) => {
             `,
             [
                 slipId,
-                component_id || null,
-                code ||
-                    component?.code ||
-                    "CUSTOM",
+                component?.id || null,
+                code || component?.code || "CUSTOM",
                 designation,
                 category,
                 qty,
                 base,
-                numericRate,
+                toRate(rate),
                 finalGain,
                 finalDeduction,
                 Number(employer_amount || 0),
@@ -395,76 +382,50 @@ const createLine = async (req, res) => {
                 component?.cnss_subject || false,
                 component?.cnamgs_subject || false,
                 component?.tcs_subject || false,
-                component?.irpp_subject || false
+                component?.irpp_subject || false,
             ]
         );
 
-        const totals = await recalculateSlipTotals(
-            client,
-            slipId
-        );
+        /*
+         * Recalcul complet (brut, cotisations, net à payer)
+         * mais le bulletin reste en brouillon.
+         */
+        const totals = await recalculateKeepDraft(client, slipId, companyId);
 
         await client.query("COMMIT");
 
         return res.status(201).json({
             message: "Ligne ajoutée avec succès.",
             line: result.rows[0],
-            totals
+            totals,
         });
-
     } catch (error) {
-
         await client.query("ROLLBACK");
 
-        console.error(
-            "Erreur ajout ligne bulletin :",
-            error
-        );
+        console.error("Erreur ajout ligne bulletin :", error);
 
-        if (error.message === "SLIP_NOT_FOUND") {
-            return res.status(404).json({
-                message: "Bulletin introuvable."
-            });
-        }
-
-        if (error.message === "SLIP_NOT_EDITABLE") {
-            return res.status(400).json({
-                message:
-                    "Ce bulletin n'est plus modifiable."
-            });
-        }
-
-        if (error.message === "COMPONENT_NOT_FOUND") {
-            return res.status(400).json({
-                message:
-                    "Composant de paie introuvable ou inactif."
-            });
-        }
-
-        return res.status(500).json({
-            message: "Erreur lors de l'ajout de la ligne."
-        });
-
+        return handleError(res, error, "Erreur lors de l'ajout de la ligne.");
     } finally {
-
         client.release();
     }
 };
 
+/* =====================================================
+   MODIFIER UNE LIGNE
+===================================================== */
 
-/**
- * Modifier une ligne
- */
 const updateLine = async (req, res) => {
-
     const client = await pool.connect();
 
     try {
-
         const { slipId, lineId } = req.params;
+        const companyId = req.user.companyId;
 
         const {
+            component_id,
+            code,
             designation,
+            category,
             quantity,
             base_amount,
             rate,
@@ -472,16 +433,12 @@ const updateLine = async (req, res) => {
             deduction,
             employer_amount,
             calculation_mode,
-            notes
+            notes,
         } = req.body;
 
         await client.query("BEGIN");
 
-        await getEditableSlip(
-            client,
-            slipId,
-            req.user.companyId
-        );
+        await getEditableSlip(client, slipId, companyId);
 
         const existingResult = await client.query(
             `
@@ -499,15 +456,27 @@ const updateLine = async (req, res) => {
 
         const existing = existingResult.rows[0];
 
-        let finalGain =
-            gain !== undefined
-                ? Number(gain || 0)
-                : Number(existing.gain || 0);
+        /*
+         * Les lignes automatiques (taxes, parts patronales) sont
+         * recréées à chaque calcul : seule la ligne SAL_BASE
+         * peut être modifiée.
+         */
+        if (existing.origin === "system" && existing.code !== "SAL_BASE") {
+            throw new Error("LINE_AUTOMATIC");
+        }
 
-        let finalDeduction =
-            deduction !== undefined
-                ? Number(deduction || 0)
-                : Number(existing.deduction || 0);
+        const finalCategory = category || existing.category;
+
+        if (
+            existing.origin !== "system" &&
+            !MANUAL_CATEGORIES.includes(finalCategory)
+        ) {
+            await client.query("ROLLBACK");
+
+            return res.status(400).json({
+                message: "Catégorie invalide pour une ligne manuelle.",
+            });
+        }
 
         const finalQuantity =
             quantity !== undefined
@@ -520,90 +489,92 @@ const updateLine = async (req, res) => {
                 : Number(existing.base_amount || 0);
 
         const finalRate =
-            rate !== undefined &&
-            rate !== null &&
-            rate !== ""
-                ? Number(rate)
-                : existing.rate;
+            rate !== undefined
+                ? toRate(rate)
+                : toRate(existing.rate);
 
         const finalMode =
-            calculation_mode ||
-            existing.calculation_mode ||
-            "manual";
+            calculation_mode || existing.calculation_mode || "manual";
 
         /*
-         * Recalculer si nécessaire
+         * Composant : si fourni, on rafraîchit ses indicateurs,
+         * sinon on garde ceux de la ligne.
          */
-        if (
-            finalMode === "quantity_rate" &&
-            finalRate !== null
-        ) {
+        let finalComponentId = existing.component_id;
 
-            const amount =
-                finalQuantity *
-                finalBase *
-                Number(finalRate) /
-                100;
+        let flags = {
+            taxable: existing.taxable || false,
+            cnss_subject: existing.cnss_subject || false,
+            cnamgs_subject: existing.cnamgs_subject || false,
+            tcs_subject: existing.tcs_subject || false,
+            irpp_subject: existing.irpp_subject || false,
+        };
 
-            if (existing.category === "earning") {
-                finalGain = amount;
-            }
-
-            if (existing.category === "deduction") {
-                finalDeduction = amount;
-            }
-        }
-
-        if (finalMode === "days") {
-
-            const settingsResult = await client.query(
-                `
-                SELECT monthly_work_days
-                FROM payroll_settings
-                WHERE company_id = $1
-                `,
-                [req.user.companyId]
+        if (component_id !== undefined) {
+            const component = await getComponent(
+                client,
+                component_id,
+                companyId
             );
 
-            const monthlyDays =
-                Number(
-                    settingsResult.rows[0]?.monthly_work_days ||
-                    30
-                );
+            finalComponentId = component?.id || null;
 
-            const amount =
-                finalQuantity *
-                finalBase /
-                monthlyDays;
-
-            if (existing.category === "deduction") {
-                finalDeduction = amount;
-            }
-
-            if (existing.category === "earning") {
-                finalGain = amount;
-            }
+            flags = {
+                taxable: component?.taxable || false,
+                cnss_subject: component?.cnss_subject || false,
+                cnamgs_subject: component?.cnamgs_subject || false,
+                tcs_subject: component?.tcs_subject || false,
+                irpp_subject: component?.irpp_subject || false,
+            };
         }
+
+        const monthlyDays = await getMonthlyDays(client, companyId);
+
+        const amount = computeAmount({
+            mode: finalMode,
+            quantity: finalQuantity,
+            base: finalBase,
+            rate: finalRate,
+            monthlyDays,
+        });
+
+        const { gain: finalGain, deduction: finalDeduction } = splitAmount({
+            category: finalCategory,
+            amount,
+            explicitGain: gain,
+            explicitDeduction: deduction,
+        });
 
         const result = await client.query(
             `
             UPDATE payroll_slip_lines
             SET
-                designation = COALESCE($1, designation),
-                quantity = $2,
-                base_amount = $3,
-                rate = $4,
-                gain = $5,
-                deduction = $6,
-                employer_amount = $7,
-                calculation_mode = $8,
-                notes = $9
-            WHERE id = $10
-              AND slip_id = $11
+                component_id = $1,
+                code = $2,
+                designation = COALESCE($3, designation),
+                category = $4,
+                quantity = $5,
+                base_amount = $6,
+                rate = $7,
+                gain = $8,
+                deduction = $9,
+                employer_amount = $10,
+                calculation_mode = $11,
+                notes = $12,
+                taxable = $13,
+                cnss_subject = $14,
+                cnamgs_subject = $15,
+                tcs_subject = $16,
+                irpp_subject = $17
+            WHERE id = $18
+              AND slip_id = $19
             RETURNING *
             `,
             [
+                finalComponentId,
+                code || existing.code,
                 designation || null,
+                finalCategory,
                 finalQuantity,
                 finalBase,
                 finalRate,
@@ -613,20 +584,23 @@ const updateLine = async (req, res) => {
                     ? Number(employer_amount || 0)
                     : Number(existing.employer_amount || 0),
                 finalMode,
-                notes !== undefined
-                    ? notes
-                    : existing.notes,
+                notes !== undefined ? notes : existing.notes,
+                flags.taxable,
+                flags.cnss_subject,
+                flags.cnamgs_subject,
+                flags.tcs_subject,
+                flags.irpp_subject,
                 lineId,
-                slipId
+                slipId,
             ]
         );
 
         /*
-         * Si on modifie le salaire de base,
-         * on synchronise aussi payroll_slips.base_salary.
+         * Modification du salaire de base :
+         * on synchronise payroll_slips.base_salary, car calculateSlip
+         * régénère la ligne SAL_BASE à partir de cette valeur.
          */
         if (existing.code === "SAL_BASE") {
-
             await client.query(
                 `
                 UPDATE payroll_slips
@@ -635,112 +609,86 @@ const updateLine = async (req, res) => {
                     updated_at = NOW()
                 WHERE id = $2
                 `,
-                [
-                    finalGain,
-                    slipId
-                ]
+                [base_amount !== undefined ? finalBase : finalGain, slipId]
             );
         }
 
-        const totals = await recalculateSlipTotals(
-            client,
-            slipId
-        );
+        const totals = await recalculateKeepDraft(client, slipId, companyId);
 
         await client.query("COMMIT");
 
         return res.json({
             message: "Ligne modifiée avec succès.",
             line: result.rows[0],
-            totals
+            totals,
         });
-
     } catch (error) {
-
         await client.query("ROLLBACK");
 
-        console.error(
-            "Erreur modification ligne bulletin :",
-            error
+        console.error("Erreur modification ligne bulletin :", error);
+
+        return handleError(
+            res,
+            error,
+            "Erreur lors de la modification de la ligne."
         );
-
-        if (error.message === "SLIP_NOT_FOUND") {
-            return res.status(404).json({
-                message: "Bulletin introuvable."
-            });
-        }
-
-        if (error.message === "SLIP_NOT_EDITABLE") {
-            return res.status(400).json({
-                message:
-                    "Ce bulletin n'est plus modifiable."
-            });
-        }
-
-        if (error.message === "LINE_NOT_FOUND") {
-            return res.status(404).json({
-                message: "Ligne introuvable."
-            });
-        }
-
-        return res.status(500).json({
-            message:
-                "Erreur lors de la modification de la ligne."
-        });
-
     } finally {
-
         client.release();
     }
 };
 
+/* =====================================================
+   SUPPRIMER UNE LIGNE
+===================================================== */
 
-/**
- * Supprimer une ligne
- */
 const deleteLine = async (req, res) => {
-
     const client = await pool.connect();
 
     try {
-
         const { slipId, lineId } = req.params;
+        const companyId = req.user.companyId;
 
         await client.query("BEGIN");
 
-        await getEditableSlip(
-            client,
-            slipId,
-            req.user.companyId
-        );
+        await getEditableSlip(client, slipId, companyId);
 
-        const result = await client.query(
+        const existingResult = await client.query(
             `
-            DELETE FROM payroll_slip_lines l
-            USING payroll_slips s
+            SELECT l.id, l.code, l.origin
+            FROM payroll_slip_lines l
+            INNER JOIN payroll_slips s
+                ON s.id = l.slip_id
             WHERE l.id = $1
               AND l.slip_id = $2
-              AND s.id = l.slip_id
               AND s.company_id = $3
-            RETURNING l.*
             `,
-            [
-                lineId,
-                slipId,
-                req.user.companyId
-            ]
+            [lineId, slipId, companyId]
         );
 
-        if (result.rowCount === 0) {
+        if (existingResult.rowCount === 0) {
             throw new Error("LINE_NOT_FOUND");
         }
 
-        /*
-         * Si le salaire de base est supprimé,
-         * on remet base_salary à 0.
-         */
-        if (result.rows[0].code === "SAL_BASE") {
+        const existing = existingResult.rows[0];
 
+        if (existing.origin === "system" && existing.code !== "SAL_BASE") {
+            throw new Error("LINE_AUTOMATIC");
+        }
+
+        await client.query(
+            `
+            DELETE FROM payroll_slip_lines
+            WHERE id = $1
+              AND slip_id = $2
+            `,
+            [lineId, slipId]
+        );
+
+        /*
+         * Salaire de base supprimé : base_salary repasse à 0,
+         * sinon calculateSlip recréerait la ligne.
+         */
+        if (existing.code === "SAL_BASE") {
             await client.query(
                 `
                 UPDATE payroll_slips
@@ -753,61 +701,32 @@ const deleteLine = async (req, res) => {
             );
         }
 
-        const totals = await recalculateSlipTotals(
-            client,
-            slipId
-        );
+        const totals = await recalculateKeepDraft(client, slipId, companyId);
 
         await client.query("COMMIT");
 
         return res.json({
             message: "Ligne supprimée avec succès.",
-            totals
+            totals,
         });
-
     } catch (error) {
-
         await client.query("ROLLBACK");
 
-        console.error(
-            "Erreur suppression ligne bulletin :",
-            error
+        console.error("Erreur suppression ligne bulletin :", error);
+
+        return handleError(
+            res,
+            error,
+            "Erreur lors de la suppression de la ligne."
         );
-
-        if (error.message === "SLIP_NOT_FOUND") {
-            return res.status(404).json({
-                message: "Bulletin introuvable."
-            });
-        }
-
-        if (error.message === "SLIP_NOT_EDITABLE") {
-            return res.status(400).json({
-                message:
-                    "Ce bulletin n'est plus modifiable."
-            });
-        }
-
-        if (error.message === "LINE_NOT_FOUND") {
-            return res.status(404).json({
-                message: "Ligne introuvable."
-            });
-        }
-
-        return res.status(500).json({
-            message:
-                "Erreur lors de la suppression de la ligne."
-        });
-
     } finally {
-
         client.release();
     }
 };
-
 
 module.exports = {
     getLines,
     createLine,
     updateLine,
-    deleteLine
+    deleteLine,
 };

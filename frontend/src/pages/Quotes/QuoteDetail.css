@@ -1,0 +1,810 @@
+/* Évite que la page dépasse de sa zone (padding compté dans la largeur) */
+.quote-detail-page,
+.quote-detail-page *,
+.quote-detail-page *::before,
+.quote-detail-page *::after,
+.quote-document,
+.quote-document *,
+.quote-document *::before,
+.quote-document *::after {
+  box-sizing: border-box;
+}
+
+.quote-detail-page {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.quote-document {
+  min-width: 0;
+}
+
+/* Permet aux blocs flex/grid de rétrécir au lieu de déborder */
+.quote-information-grid > *,
+.quote-document-top > *,
+.quote-company-info {
+  min-width: 0;
+}
+
+.quote-document-top {
+  flex-wrap: wrap;
+}
+
+.quote-document-title {
+  margin-left: auto;
+}
+
+
+.quote-detail-page {
+  padding: 24px;
+  width: 100%;
+}
+
+/* HEADER */
+
+.quote-detail-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.quote-back-button {
+  border: 0;
+  background: transparent;
+  color: #6b7280;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0;
+  cursor: pointer;
+  font-size: 13px;
+  margin-bottom: 14px;
+}
+
+.quote-back-button:hover {
+  color: #1f2937;
+}
+
+.quote-title-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.quote-title-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: #fff7ed;
+  color: #f97316;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.quote-title-row h1 {
+  margin: 0 0 4px;
+  font-size: 25px;
+  color: #111827;
+}
+
+.quote-title-row p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 13px;
+}
+
+.quote-detail-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.quote-action-primary,
+.quote-action-secondary {
+  min-height: 40px;
+  padding: 0 14px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.quote-action-primary {
+  border: 0;
+  background: #1f2937;
+  color: white;
+}
+
+.quote-action-primary:hover {
+  background: #1f2937;
+}
+
+.quote-action-secondary {
+  border: 1px solid #e5e7eb;
+  background: white;
+  color: #374151;
+}
+
+.quote-action-secondary:hover {
+  border-color: #fdba74;
+  color: #1f2937;
+  background: #fffaf5;
+}
+
+.quote-detail-message {
+  margin-bottom: 18px;
+  padding: 12px 14px;
+  border-radius: 8px;
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  color: #9a3412;
+  font-size: 13px;
+}
+
+.quote-detail-loading,
+.quote-detail-error {
+  padding: 50px;
+  text-align: center;
+  color: #6b7280;
+}
+
+/* DOCUMENT */
+
+.quote-document {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 38px;
+  box-sizing: border-box;
+}
+
+/* DOCUMENT TOP : ENTREPRISE + TITRE */
+
+.quote-document-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.quote-company {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  min-width: 0;
+}
+
+.quote-company-logo {
+  width: 84px;
+  height: 84px;
+  flex-shrink: 0;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  color: #9ca3af;
+}
+
+.quote-company-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 6px;
+  box-sizing: border-box;
+}
+
+.quote-company-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-size: 13px;
+  color: #4b5563;
+  min-width: 0;
+}
+
+.quote-company-info h3 {
+  margin: 0 0 2px;
+  font-size: 18px;
+  color: #111827;
+}
+
+.quote-company-info small {
+  margin-top: 4px;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.quote-document-title {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.quote-document-label {
+  display: block;
+  color: #1f2937;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+}
+
+.quote-document-title h2 {
+  margin: 0;
+  font-size: 25px;
+  color: #111827;
+}
+
+.quote-detail-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.quote-detail-status.draft {
+  background: #f3f4f6;
+  color: #4b5563;
+}
+
+.quote-detail-status.sent {
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+.quote-detail-status.accepted {
+  background: #ecfdf5;
+  color: #059669;
+}
+
+.quote-detail-status.rejected {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.quote-detail-status.expired {
+  background: #fff7ed;
+  color: #1f2937;
+}
+
+.quote-detail-status.cancelled {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+.quote-document-separator {
+  height: 1px;
+  background: #e5e7eb;
+  margin: 25px 0;
+}
+
+/* INFORMATION */
+
+.quote-information-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 24px;
+}
+
+.quote-info-block {
+  border: 1px solid #edf0f2;
+  border-radius: 10px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.quote-info-heading {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #1f2937;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 7px;
+}
+
+.quote-info-block > strong {
+  color: #111827;
+  font-size: 15px;
+}
+
+.quote-info-block > span {
+  color: #6b7280;
+  font-size: 13px;
+}
+
+.quote-info-line {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 6px 0;
+  font-size: 13px;
+}
+
+.quote-info-line span {
+  color: #6b7280;
+}
+
+.quote-info-line strong {
+  color: #111827;
+}
+
+/* SUBJECT */
+
+.quote-subject {
+  margin-top: 24px;
+  padding: 15px 18px;
+  background: #fafafa;
+  border-left: 3px solid #1f2937;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.quote-subject span {
+  font-size: 11px;
+  color: #9ca3af;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.quote-subject strong {
+  color: #111827;
+  font-size: 14px;
+}
+
+/* LINES */
+
+.quote-lines-section {
+  margin-top: 30px;
+}
+
+.quote-section-heading {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 13px;
+}
+
+.quote-section-heading > div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #1f2937;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.quote-lines-wrapper {
+  overflow-x: auto;
+}
+
+.quote-lines-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 850px;
+}
+
+.quote-lines-table th {
+  padding: 12px 10px;
+  background: #f8fafc;
+  color: #6b7280;
+  font-size: 10px;
+  text-align: left;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.quote-lines-table td {
+  padding: 13px 10px;
+  border-bottom: 1px solid #edf0f2;
+  color: #374151;
+  font-size: 12px;
+}
+
+.quote-lines-table td:first-child {
+  color: #9ca3af;
+  width: 35px;
+}
+
+.quote-lines-table td strong {
+  color: #111827;
+}
+
+/* SUMMARY */
+
+.quote-summary {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 25px;
+}
+
+.quote-summary-box {
+  width: 330px;
+  max-width: 100%;
+}
+
+.quote-summary-box > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 8px 0;
+  font-size: 13px;
+}
+
+.quote-summary-box > div span {
+  color: #6b7280;
+}
+
+.quote-summary-box > div strong {
+  color: #374151;
+}
+
+.quote-grand-total {
+  margin-top: 8px;
+  padding: 14px 0 !important;
+  border-top: 2px solid #111827;
+}
+
+.quote-grand-total span {
+  color: #111827 !important;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.quote-grand-total strong {
+  color: #1f2937 !important;
+  font-size: 20px !important;
+}
+
+/* NOTES */
+
+.quote-notes {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.quote-notes h3 {
+  margin: 0 0 8px;
+  font-size: 14px;
+  color: #111827;
+}
+
+.quote-notes p {
+  margin: 0;
+  white-space: pre-wrap;
+  color: #6b7280;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+/* SIGNATURES */
+
+.quote-signatures {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 24px;
+  margin-top: 40px;
+}
+
+.quote-signature-box {
+  min-height: 110px;
+  border: 1px dashed #d1d5db;
+  border-radius: 10px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.quote-signature-box span {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #9ca3af;
+}
+
+.quote-signature-box strong {
+  font-size: 13px;
+  color: #111827;
+}
+
+.quote-signature-box small {
+  font-size: 11px;
+  color: #9ca3af;
+}
+
+/* PIED DE PAGE */
+
+.quote-footer {
+  margin-top: 36px;
+  padding-top: 16px;
+  border-top: 1px solid #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  text-align: center;
+  font-size: 11px;
+  color: #6b7280;
+}
+
+.quote-footer strong {
+  color: #374151;
+  font-size: 12px;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 850px) {
+  .quote-detail-page {
+    padding: 16px;
+  }
+
+  .quote-detail-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .quote-detail-actions {
+    flex-wrap: wrap;
+  }
+
+  .quote-action-primary,
+  .quote-action-secondary {
+    flex: 1;
+  }
+
+  .quote-information-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .quote-document {
+    padding: 22px;
+  }
+}
+
+@media (max-width: 700px) {
+  .quote-document-top {
+    flex-direction: column;
+  }
+
+  .quote-document-title {
+    align-items: flex-start;
+    text-align: left;
+  }
+}
+
+@media (max-width: 520px) {
+  .quote-detail-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .quote-document {
+    padding: 16px;
+    border-radius: 8px;
+  }
+
+  .quote-company {
+    flex-direction: column;
+  }
+
+  .quote-summary-box {
+    width: 100%;
+  }
+
+  .quote-signatures {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* TÉLÉCHARGEMENT PDF (classe ajoutée pendant la capture) */
+
+.quote-action-secondary:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+/* La largeur suit le conteneur A4 créé par html2pdf (marges déjà gérées par le PDF) */
+.quote-document.pdf-mode {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0;
+  border-radius: 0;
+  overflow: visible;
+}
+
+.pdf-mode .quote-document-top {
+  flex-direction: row !important;
+  flex-wrap: nowrap;
+  gap: 16px;
+}
+
+.pdf-mode .quote-company {
+  flex-direction: row !important;
+}
+
+.pdf-mode .quote-company-logo {
+  width: 70px;
+  height: 70px;
+}
+
+.pdf-mode .quote-company-info {
+  font-size: 12px;
+}
+
+.pdf-mode .quote-document-title {
+  align-items: flex-end !important;
+  text-align: right !important;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.pdf-mode .quote-document-title h2 {
+  font-size: 20px;
+}
+
+.pdf-mode .quote-document-separator {
+  margin: 18px 0;
+}
+
+.pdf-mode .quote-information-grid,
+.pdf-mode .quote-signatures {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+  gap: 16px;
+}
+
+.pdf-mode .quote-lines-wrapper {
+  overflow: visible;
+}
+
+/* Tableau qui tient exactement dans la largeur A4 */
+.pdf-mode .quote-lines-table {
+  min-width: 0 !important;
+  width: 100%;
+  table-layout: fixed;
+}
+
+.pdf-mode .quote-lines-table th,
+.pdf-mode .quote-lines-table td {
+  font-size: 9px;
+  padding: 7px 4px;
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+.pdf-mode .quote-lines-table th:nth-child(1),
+.pdf-mode .quote-lines-table td:nth-child(1) { width: 4%; }
+.pdf-mode .quote-lines-table th:nth-child(2),
+.pdf-mode .quote-lines-table td:nth-child(2) { width: 25%; }
+.pdf-mode .quote-lines-table th:nth-child(3),
+.pdf-mode .quote-lines-table td:nth-child(3) { width: 7%; }
+.pdf-mode .quote-lines-table th:nth-child(4),
+.pdf-mode .quote-lines-table td:nth-child(4) { width: 11%; }
+.pdf-mode .quote-lines-table th:nth-child(5),
+.pdf-mode .quote-lines-table td:nth-child(5) { width: 16%; }
+.pdf-mode .quote-lines-table th:nth-child(6),
+.pdf-mode .quote-lines-table td:nth-child(6) { width: 12%; }
+.pdf-mode .quote-lines-table th:nth-child(7),
+.pdf-mode .quote-lines-table td:nth-child(7) { width: 7%; }
+.pdf-mode .quote-lines-table th:nth-child(8),
+.pdf-mode .quote-lines-table td:nth-child(8) { width: 18%; }
+
+.pdf-mode .quote-summary-box {
+  width: 300px;
+}
+
+.pdf-mode .quote-info-block,
+.pdf-mode .quote-summary,
+.pdf-mode .quote-notes,
+.pdf-mode .quote-signatures,
+.pdf-mode .quote-footer {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+/* IMPRESSION */
+
+@media print {
+  @page {
+    size: A4;
+    margin: 12mm;
+  }
+
+  body {
+    background: white !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .quote-detail-page {
+    padding: 0;
+  }
+
+  .quote-detail-header,
+  .quote-detail-message,
+  .quote-back-button {
+    display: none !important;
+  }
+
+  .quote-document {
+    max-width: none;
+    border: 0;
+    border-radius: 0;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+  }
+
+  .quote-document-top {
+    flex-direction: row;
+    flex-wrap: nowrap;
+  }
+
+  .quote-document-title {
+    align-items: flex-end;
+    text-align: right;
+  }
+
+  .quote-company-logo {
+    width: 70px;
+    height: 70px;
+  }
+
+  .quote-document-separator {
+    margin: 18px 0;
+  }
+
+  .quote-lines-table {
+    min-width: 0;
+  }
+
+  .quote-lines-table th,
+  .quote-lines-table td {
+    font-size: 9px;
+    padding: 7px 6px;
+  }
+
+  .quote-info-block,
+  .quote-summary,
+  .quote-notes,
+  .quote-signatures,
+  .quote-footer {
+    break-inside: avoid;
+  }
+
+  .quote-lines-section {
+    break-inside: auto;
+  }
+
+  .quote-information-grid,
+  .quote-signatures {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}

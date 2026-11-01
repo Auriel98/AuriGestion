@@ -1,0 +1,148 @@
+.workforce-evolution {
+    min-width: 0;
+    height: 100%;
+    padding: 20px;
+    background: #ffffff;
+    border: 1px solid #e6edf5;
+    border-radius: 9px;
+    box-shadow: 0 2px 8px rgba(30, 58, 95, 0.035);
+}
+
+.workforce-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+.workforce-title {
+    margin: 0;
+    color: #172b4d;
+    font-size: 16px;
+    font-weight: 750;
+    line-height: 1.4;
+    letter-spacing: -0.2px;
+}
+
+/* Légende */
+
+.workforce-legend {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 0;
+    margin: 0;
+    color: #4a5b78;
+    font-size: 12px;
+    list-style: none;
+}
+
+.workforce-legend li {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.workforce-legend-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+}
+
+.workforce-legend-dot.employees {
+    background: #ff8a1f;
+}
+
+.workforce-legend-dot.contracts {
+    background: #ffc266;
+}
+
+/* Graphique */
+
+.workforce-svg {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.workforce-grid {
+    stroke: #e9eef5;
+    stroke-width: 1;
+    stroke-dasharray: 3 4;
+}
+
+.workforce-axis-label {
+    fill: #71829e;
+    font-size: 11px;
+}
+
+.workforce-bar {
+    fill: #ff8a1f;
+    transition: opacity 0.2s ease;
+}
+
+.workforce-bar:hover {
+    opacity: 0.8;
+}
+
+.workforce-line {
+    fill: none;
+    stroke: #ffb04d;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.workforce-dot {
+    fill: #ffc266;
+    stroke: #ffffff;
+    stroke-width: 1.5;
+}
+
+/* États (chargement, erreur, vide) */
+
+.workforce-state {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    min-height: 220px;
+    padding: 16px;
+    color: #71829e;
+    font-size: 12.5px;
+    text-align: center;
+}
+
+.workforce-state.error {
+    flex-direction: column;
+    color: #b42318;
+}
+
+.workforce-state.error button {
+    padding: 7px 12px;
+    color: #ffffff;
+    font: inherit;
+    font-weight: 600;
+    background: #e5484d;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.workforce-state.error button:hover {
+    background: #c83238;
+}
+
+@media (max-width: 600px) {
+    .workforce-evolution {
+        padding: 16px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .workforce-bar {
+        transition: none;
+    }
+}
