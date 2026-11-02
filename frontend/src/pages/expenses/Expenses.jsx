@@ -328,7 +328,6 @@ export default function Expenses() {
       {/* HEADER */}
       <div className="expenses-header">
         <div>
-          <h1>Dépenses</h1>
           <p>
             Suivez les dépenses générales et celles liées aux
             marchés.

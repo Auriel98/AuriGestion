@@ -391,7 +391,6 @@ const Clients = () => {
             <div className="clients-header">
 
                 <div>
-                    <h2>Clients</h2>
 
                     <p>
                         Gérez vos clients et leurs informations

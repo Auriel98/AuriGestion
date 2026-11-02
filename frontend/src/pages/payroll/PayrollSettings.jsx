@@ -358,7 +358,6 @@ export default function PayrollSettings() {
 
       <div className="page-header">
         <div>
-          <h1>Paramètres de paie</h1>
           <p>
             Configurez les éléments utilisés pour calculer les bulletins.
           </p>

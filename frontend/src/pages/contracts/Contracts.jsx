@@ -296,9 +296,6 @@ const Contracts = () => {
 
                 <div>
 
-                    <h1>
-                        Contrats
-                    </h1>
 
                     <p>
                         Gestion des contrats des employés

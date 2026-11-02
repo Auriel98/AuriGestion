@@ -346,7 +346,6 @@ export default function Markets() {
             </div>
 
             <div>
-              <h1>Marchés</h1>
 
               <p>
                 Gérez vos marchés, contrats et budgets.

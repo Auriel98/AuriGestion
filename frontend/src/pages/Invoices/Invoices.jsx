@@ -367,7 +367,6 @@ export default function Invoices() {
     <div className="invoices-page">
       <div className="page-header">
         <div>
-          <h1>Factures</h1>
           <p>Créez et gérez les factures de vos clients.</p>
         </div>
 

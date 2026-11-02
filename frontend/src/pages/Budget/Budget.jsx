@@ -207,7 +207,6 @@ export default function Budget() {
     <div className="budget-page">
       <header className="budget-header">
         <div>
-          <h1>Budget & Rentabilité</h1>
 
           <p>
             Suivez les dépenses, les budgets disponibles et la rentabilité de

@@ -286,7 +286,6 @@ export default function PayrollPeriods() {
 
       <div className="page-header">
         <div>
-          <h1>Périodes de paie</h1>
           <p>
             Gérez les périodes et choisissez manuellement les
             employés à rémunérer.

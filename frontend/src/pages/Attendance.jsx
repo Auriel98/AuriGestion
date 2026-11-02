@@ -257,7 +257,6 @@ const Attendance = () => {
             <div className="page-header">
 
                 <div>
-                    <h1>Présences</h1>
 
                     <p>
                         Indique pour chaque employé s'il a travaillé,

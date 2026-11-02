@@ -341,7 +341,6 @@ const AuditLogs = () => {
   return (
     <main className="audit-page">
       <div className="audit-header">
-        <h1 className="audit-title">Journal d'audit</h1>
         <p className="audit-description">
           Historique des créations, modifications et suppressions, avec
           l'utilisateur qui les a effectuées.

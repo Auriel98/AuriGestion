@@ -405,7 +405,6 @@ function Quotes() {
       <div className="quotes-header">
 
         <div>
-          <h1>Devis</h1>
 
           <p>
             Créez et gérez les devis envoyés à vos clients.
