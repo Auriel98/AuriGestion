@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { API_URL } from "../../api/api";
+import api from "../../api/api";
 
 import "./DepartmentDistribution.css";
 
@@ -30,41 +30,24 @@ const DepartmentDistribution = () => {
 
   useEffect(() => {
     const controller = new AbortController();
+    let ignore = false; // sécurité si api.js ne transmet pas le signal
 
     const fetchDepartments = async () => {
       try {
         setLoading(true);
         setError("");
 
-        const token = localStorage.getItem("token");
-
-        if (!token) {
-          throw new Error("Vous devez vous connecter.");
-        }
-
-        const response = await fetch(
-          `${API_URL}/dashboard/employees-by-department`,
-          {
-            method: "GET",
-            headers: {
-              Accept: "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-            signal: controller.signal,
-          }
+        // api.js gère déjà le token et les en-têtes
+        const result = await api.get(
+          "/dashboard/employees-by-department",
+          { signal: controller.signal }
         );
 
-        const result = await response.json();
+        if (ignore) return;
 
-        if (!response.ok) {
+        if (!result?.success || !Array.isArray(result.data)) {
           throw new Error(
-            result.message || "Impossible de récupérer la répartition."
-          );
-        }
-
-        if (!result.success || !Array.isArray(result.data)) {
-          throw new Error(
-            result.message || "Réponse inattendue du serveur."
+            result?.message || "Réponse inattendue du serveur."
           );
         }
 
@@ -75,14 +58,14 @@ const DepartmentDistribution = () => {
           }))
         );
       } catch (err) {
-        if (err.name === "AbortError") {
-          return;
-        }
+        if (ignore || err.name === "AbortError") return;
 
         console.error("Erreur de chargement de la répartition :", err);
-        setError(err.message);
+        setError(
+          err.message || "Impossible de récupérer la répartition."
+        );
       } finally {
-        if (!controller.signal.aborted) {
+        if (!ignore) {
           setLoading(false);
         }
       }
@@ -91,6 +74,7 @@ const DepartmentDistribution = () => {
     fetchDepartments();
 
     return () => {
+      ignore = true;
       controller.abort();
     };
   }, [retryCount]);

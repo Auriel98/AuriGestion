@@ -1,4 +1,3 @@
-
 const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
@@ -51,11 +50,30 @@ app.use(
 
 // ========================================
 // CONFIGURATION CORS
+// Origines autorisées configurables via .env :
+// CORS_ORIGINS=http://localhost:5173,http://193.70.0.4
 // ========================================
+
+const allowedOrigins = (
+    process.env.CORS_ORIGINS || "http://localhost:5173"
+)
+    .split(",")
+    .map((origin) => origin.trim())
+    .filter(Boolean);
 
 app.use(
     cors({
-        origin: "http://localhost:5173",
+        origin: (origin, callback) => {
+            // Requêtes sans origine (Postman, curl, serveur à serveur)
+            if (!origin || allowedOrigins.includes(origin)) {
+                return callback(null, true);
+            }
+
+            const error = new Error("Origine non autorisée par CORS.");
+            error.status = 403;
+
+            return callback(error);
+        },
         credentials: true,
         methods: [
             "GET",

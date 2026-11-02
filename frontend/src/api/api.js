@@ -1,51 +1,40 @@
+
 export const API_URL = (
-    import.meta.env.VITE_API_URL ||
-    "http://localhost:5000/api"
+    import.meta.env.VITE_API_URL || "/api"
 ).replace(/\/$/, "");
 
 export const API_ORIGIN = (
-    import.meta.env.VITE_API_ORIGIN ||
-    "http://localhost:5000"
+    import.meta.env.VITE_API_ORIGIN || ""
 ).replace(/\/$/, "");
 
 const api = async (
     endpoint,
     options = {}
 ) => {
-
-    const token =
-        localStorage.getItem("token");
-
+    const token = localStorage.getItem("token");
 
     const headers = {
         ...(options.headers || {}),
     };
 
-
     if (
         options.body &&
         !(options.body instanceof FormData)
     ) {
-        headers["Content-Type"] =
-            "application/json";
+        headers["Content-Type"] = "application/json";
     }
-
 
     if (token) {
-        headers.Authorization =
-            `Bearer ${token}`;
+        headers.Authorization = `Bearer ${token}`;
     }
 
-
-    const response =
-        await fetch(
-            `${API_URL}${endpoint}`,
-            {
-                ...options,
-                headers,
-            }
-        );
-
+    const response = await fetch(
+        `${API_URL}${endpoint}`,
+        {
+            ...options,
+            headers,
+        }
+    );
 
     let data = {};
 
@@ -55,7 +44,6 @@ const api = async (
         data = {};
     }
 
-
     if (!response.ok) {
         throw new Error(
             data.message ||
@@ -63,27 +51,19 @@ const api = async (
         );
     }
 
-
     return data;
 };
-
-
-// ============================================
-// RACCOURCIS : api.get / post / put / patch / delete
-// ============================================
 
 const toBody = (data) =>
     data instanceof FormData
         ? data
         : JSON.stringify(data);
 
-
 api.get = (endpoint, options = {}) =>
     api(endpoint, {
         ...options,
         method: "GET",
     });
-
 
 api.post = (endpoint, data, options = {}) =>
     api(endpoint, {
@@ -92,14 +72,12 @@ api.post = (endpoint, data, options = {}) =>
         body: toBody(data),
     });
 
-
 api.put = (endpoint, data, options = {}) =>
     api(endpoint, {
         ...options,
         method: "PUT",
         body: toBody(data),
     });
-
 
 api.patch = (endpoint, data, options = {}) =>
     api(endpoint, {
@@ -108,12 +86,10 @@ api.patch = (endpoint, data, options = {}) =>
         body: toBody(data),
     });
 
-
 api.delete = (endpoint, options = {}) =>
     api(endpoint, {
         ...options,
         method: "DELETE",
     });
-
 
 export default api;
