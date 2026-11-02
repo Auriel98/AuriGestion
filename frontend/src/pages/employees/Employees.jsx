@@ -12,12 +12,14 @@ import {
     Power,
     Trash2,
     FolderOpen,
+    Eye,
 } from "lucide-react";
 
-import api from "../../api/api";
+import api, { API_ORIGIN } from "../../api/api";
 
 import MiniDashboard from "../../components/dashboard/MiniDashboard";
 import EmployeeModal from "../../components/employees/EmployeeModal";
+import EmployeeDetailModal from "../../components/employees/EmployeeDetailModal";
 import DocumentModal from "../../components/documents/DocumentModal";
 
 import "./Employees.css";
@@ -43,6 +45,10 @@ const Employees = () => {
     // avec selectedEmployee utilisé par le modal d'édition)
     const [documentModalOpen, setDocumentModalOpen] = useState(false);
     const [documentEmployee, setDocumentEmployee] = useState(null);
+
+    // Modal fiche employé (détails)
+    const [detailOpen, setDetailOpen] = useState(false);
+    const [detailEmployee, setDetailEmployee] = useState(null);
 
     const [actionLoading, setActionLoading] = useState(false);
 
@@ -155,6 +161,25 @@ const Employees = () => {
 
 
     // =====================================================
+    // FICHE EMPLOYÉ
+    // =====================================================
+
+    const openDetails = (employee) => {
+
+        setDetailEmployee(employee);
+        setDetailOpen(true);
+        setOpenActionId(null);
+    };
+
+
+    const closeDetails = () => {
+
+        setDetailOpen(false);
+        setDetailEmployee(null);
+    };
+
+
+    // =====================================================
     // ACTIVER / DÉSACTIVER
     // =====================================================
 
@@ -247,7 +272,7 @@ const Employees = () => {
             return null;
         }
 
-        return `${import.meta.env.VITE_API_ORIGIN}${photoUrl}`;
+        return `${API_ORIGIN}${photoUrl}`;
     };
 
 
@@ -265,7 +290,6 @@ const Employees = () => {
             <div className="page-header">
 
                 <div>
-                    <h1>Employés</h1>
                     <p>Gérez les employés de votre entreprise</p>
                 </div>
 
@@ -394,11 +418,15 @@ const Employees = () => {
                                     <tr key={employee.id}>
 
 
-                                        {/* EMPLOYÉ */}
+                                        {/* EMPLOYÉ (cliquable → fiche) */}
 
                                         <td>
 
-                                            <div className="employee-cell">
+                                            <div
+                                                className="employee-cell"
+                                                onClick={() => openDetails(employee)}
+                                                style={{ cursor: "pointer" }}
+                                            >
 
                                                 {getPhotoUrl(employee.photo_url) ? (
 
@@ -519,6 +547,13 @@ const Employees = () => {
                                                     <div className="action-menu">
 
                                                         <button
+                                                            onClick={() => openDetails(employee)}
+                                                        >
+                                                            <Eye size={15} />
+                                                            Voir la fiche
+                                                        </button>
+
+                                                        <button
                                                             onClick={() => handleEdit(employee)}
                                                         >
                                                             <Pencil size={15} />
@@ -587,6 +622,19 @@ const Employees = () => {
                     setShowModal(false);
                     setSelectedEmployee(null);
                     loadData();
+                }}
+            />
+
+
+            {/* MODAL FICHE EMPLOYÉ */}
+
+            <EmployeeDetailModal
+                isOpen={detailOpen}
+                employee={detailEmployee}
+                onClose={closeDetails}
+                onEdit={(emp) => {
+                    closeDetails();
+                    handleEdit(emp);
                 }}
             />
 

@@ -1,0 +1,55 @@
+.employee-detail .detail-body {
+    padding: 0 24px 8px;
+    overflow-y: auto;
+    max-height: calc(90vh - 190px);
+}
+
+.detail-hero {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 16px 0 8px;
+}
+
+.detail-hero h3 {
+    margin: 0 0 2px;
+    font-size: 18px;
+}
+
+.detail-hero p {
+    margin: 0 0 8px;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.detail-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px 20px;
+    margin: 12px 0 0;
+}
+
+.detail-item dt {
+    font-size: 12px;
+    color: #6b7280;
+    margin-bottom: 2px;
+}
+
+.detail-item dd {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+    word-break: break-word;
+}
+
+.detail-loading {
+    padding: 8px 0;
+    color: #6b7280;
+    font-size: 13px;
+}
+
+@media (max-width: 640px) {
+    .detail-grid {
+        grid-template-columns: 1fr;
+    }
+}

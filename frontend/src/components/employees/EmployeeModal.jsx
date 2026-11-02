@@ -10,23 +10,40 @@ import {
     Trash2,
 } from "lucide-react";
 
-import api from "../../api/api";
+import api, { API_ORIGIN } from "../../api/api";
 
 import "./EmployeeModal.css";
 
 
-// URL du serveur backend (là où sont servis les /uploads).
-// ADAPTE selon ton projet :
-//   Vite : import.meta.env.VITE_API_URL
-//   CRA  : process.env.REACT_APP_API_URL
-const SERVER_URL = "http://localhost:5000";
-
+// Les photos sont stockées sous forme de chemin relatif (/uploads/...) :
+// on les préfixe avec l'adresse du backend définie dans api.js.
 const buildPhotoSrc = (photoUrl) => {
     if (!photoUrl) return null;
     if (photoUrl.startsWith("http") || photoUrl.startsWith("blob:")) {
         return photoUrl;
     }
-    return `${SERVER_URL}${photoUrl}`;
+    return `${API_ORIGIN}${photoUrl}`;
+};
+
+// Convertit une date (YYYY-MM-DD ou ISO complet) en valeur pour <input type="date">.
+// Si c'est déjà "YYYY-MM-DD", on la garde telle quelle (aucun décalage de fuseau).
+// Sinon on lit les composantes en heure locale pour éviter le décalage d'un jour.
+const toDateInput = (value) => {
+    if (!value) return "";
+
+    if (typeof value === "string" && /^\d{4}-\d{2}-\d{2}$/.test(value)) {
+        return value;
+    }
+
+    const date = new Date(value);
+
+    if (Number.isNaN(date.getTime())) return "";
+
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
 };
 
 const ALLOWED_PHOTO_TYPES = ["image/jpeg", "image/png", "image/webp"];
@@ -56,6 +73,31 @@ const initialForm = {
     service_id: "",
 };
 
+// Transforme un employé (liste ou fiche complète) en valeurs de formulaire
+const employeeToForm = (emp) => ({
+    matricule: emp.matricule || "",
+    first_name: emp.first_name || "",
+    last_name: emp.last_name || "",
+
+    email: emp.email || "",
+    phone: emp.phone || "",
+
+    birth_date: toDateInput(emp.birth_date),
+    birth_place: emp.birth_place || "",
+
+    nationality: emp.nationality || "Gabonaise",
+    marital_status: emp.marital_status || "",
+    children_count: emp.children_count ?? 0,
+
+    cnss_number: emp.cnss_number || "",
+
+    position: emp.position || "",
+
+    hire_date: toDateInput(emp.hire_date),
+
+    service_id: emp.service_id || "",
+});
+
 
 const EmployeeModal = ({
     isOpen,
@@ -71,15 +113,23 @@ const EmployeeModal = ({
     const [loadingServices, setLoadingServices] = useState(false);
     const [error, setError] = useState("");
 
+    // Chargement de la fiche complète (modification uniquement)
+    const [loadingEmployee, setLoadingEmployee] = useState(false);
+    const [employeeLoadFailed, setEmployeeLoadFailed] = useState(false);
+
     // ----- Photo -----
     const fileInputRef = useRef(null);
 
-    const [photoFile, setPhotoFile] = useState(null);       // nouveau fichier choisi
-    const [photoPreview, setPhotoPreview] = useState(null); // aperçu local (blob)
+    const [photoFile, setPhotoFile] = useState(null);         // nouveau fichier choisi
+    const [photoPreview, setPhotoPreview] = useState(null);   // aperçu local (blob)
     const [existingPhoto, setExistingPhoto] = useState(null); // photo déjà en base
     const [removeExisting, setRemoveExisting] = useState(false);
 
     const isEdit = Boolean(employee);
+
+    // Tant que la fiche complète n'est pas chargée (ou a échoué),
+    // on interdit l'enregistrement pour ne jamais écraser de données.
+    const saveBlocked = isEdit && (loadingEmployee || employeeLoadFailed);
 
 
     // =====================================================
@@ -92,52 +142,65 @@ const EmployeeModal = ({
             return;
         }
 
+        let cancelled = false;
+
         loadServices();
+
+        // Réinitialiser l'état de la photo et des erreurs à chaque ouverture
+        setPhotoFile(null);
+        setPhotoPreview(null);
+        setRemoveExisting(false);
+        setError("");
+        setEmployeeLoadFailed(false);
 
         if (employee) {
 
-            setForm({
-                matricule: employee.matricule || "",
-                first_name: employee.first_name || "",
-                last_name: employee.last_name || "",
-
-                email: employee.email || "",
-                phone: employee.phone || "",
-
-                birth_date: employee.birth_date
-                    ? employee.birth_date.substring(0, 10)
-                    : "",
-
-                birth_place: employee.birth_place || "",
-
-                nationality: employee.nationality || "Gabonaise",
-                marital_status: employee.marital_status || "",
-                children_count: employee.children_count ?? 0,
-
-                cnss_number: employee.cnss_number || "",
-
-                position: employee.position || "",
-
-                hire_date: employee.hire_date
-                    ? employee.hire_date.substring(0, 10)
-                    : "",
-
-                service_id: employee.service_id || "",
-            });
-
+            // Affichage immédiat avec les données de la liste (incomplètes)...
+            setForm(employeeToForm(employee));
             setExistingPhoto(employee.photo_url || null);
+
+            // ...puis remplacement par la fiche complète
+            setLoadingEmployee(true);
+
+            api.get(`/employees/${employee.id}`)
+                .then((response) => {
+
+                    if (cancelled) return;
+
+                    const full = response?.employee ?? response;
+
+                    setForm(employeeToForm(full));
+                    setExistingPhoto(full.photo_url || null);
+                })
+                .catch((err) => {
+
+                    if (cancelled) return;
+
+                    console.error("Erreur chargement employé :", err);
+
+                    setEmployeeLoadFailed(true);
+                    setError(
+                        "Impossible de charger la fiche complète. " +
+                        "Fermez puis rouvrez la fenêtre avant d'enregistrer."
+                    );
+                })
+                .finally(() => {
+
+                    if (!cancelled) {
+                        setLoadingEmployee(false);
+                    }
+                });
 
         } else {
 
             setForm(initialForm);
             setExistingPhoto(null);
+            setLoadingEmployee(false);
         }
 
-        // Réinitialiser l'état de la photo à chaque ouverture
-        setPhotoFile(null);
-        setPhotoPreview(null);
-        setRemoveExisting(false);
-        setError("");
+        return () => {
+            cancelled = true;
+        };
 
     }, [isOpen, employee]);
 
@@ -254,6 +317,11 @@ const EmployeeModal = ({
     const handleSubmit = async (event) => {
 
         event.preventDefault();
+
+        // Sécurité : jamais d'enregistrement avec des données incomplètes
+        if (saveBlocked) {
+            return;
+        }
 
         setError("");
 
@@ -742,15 +810,17 @@ const EmployeeModal = ({
                         <button
                             type="submit"
                             className="primary-button"
-                            disabled={loading}
+                            disabled={loading || saveBlocked}
                         >
                             <Save size={17} />
 
                             {loading
                                 ? "Enregistrement..."
-                                : isEdit
-                                    ? "Enregistrer les modifications"
-                                    : "Créer l'employé"}
+                                : loadingEmployee
+                                    ? "Chargement de la fiche..."
+                                    : isEdit
+                                        ? "Enregistrer les modifications"
+                                        : "Créer l'employé"}
                         </button>
 
                     </div>

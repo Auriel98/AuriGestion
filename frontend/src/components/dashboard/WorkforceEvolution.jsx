@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
 
-import "./WorkforceEvolution.css";
+import { API_URL } from "../../api/api";
 
-const API_URL = (
-  import.meta.env.VITE_API_URL || "http://localhost:5000/api"
-).replace(/\/$/, "");
+import "./WorkforceEvolution.css";
 
 const MONTH_LABELS = [
   "Jan",

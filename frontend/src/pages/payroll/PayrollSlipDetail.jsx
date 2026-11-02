@@ -12,7 +12,7 @@ import {
   X,
 } from "lucide-react";
 
-import api from "../../api/api";
+import api, { API_ORIGIN } from "../../api/api";
 import MiniDashboard from "../../components/dashboard/MiniDashboard";
 import "./PayrollSlipDetail.css";
 
@@ -339,7 +339,7 @@ export default function PayrollSlipDetail() {
 
           {slip.photo_url ? (
             <img
-              src={`${import.meta.env.VITE_API_ORIGIN}${slip.photo_url}`}
+              src={`${API_ORIGIN}${slip.photo_url}`}
               alt=""
               className="employee-photo"
             />

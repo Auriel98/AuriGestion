@@ -11,7 +11,7 @@ import {
     Trash2
 } from "lucide-react";
 
-import api from "../../api/api";
+import api, { API_ORIGIN } from "../../api/api";
 
 import MiniDashboard from "../../components/dashboard/MiniDashboard";
 import ContractModal from "../../components/contracts/ContractModal";
@@ -539,7 +539,7 @@ const Contracts = () => {
                                                     {contract.photo_url ? (
 
                                                         <img
-                                                            src={`${import.meta.env.VITE_API_ORIGIN}${contract.photo_url}`}
+                                                            src={`${API_ORIGIN}${contract.photo_url}`}
                                                             alt=""
                                                         />
 

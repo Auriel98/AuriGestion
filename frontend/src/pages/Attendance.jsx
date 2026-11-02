@@ -9,12 +9,10 @@ import {
     CalendarDays
 } from "lucide-react";
 
-import api from "../api/api";
+import api, { API_ORIGIN } from "../api/api";
 import MiniDashboard from "../components/dashboard/MiniDashboard";
 
 import "./Attendance.css";
-
-const API_ORIGIN = import.meta.env.VITE_API_ORIGIN;
 
 
 // Statuts de la journée (doivent correspondre à la base)

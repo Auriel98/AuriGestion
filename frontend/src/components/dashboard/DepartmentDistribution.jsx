@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
 
-import "./DepartmentDistribution.css";
+import { API_URL } from "../../api/api";
 
-const API_URL = (
-  import.meta.env.VITE_API_URL || "http://localhost:5000/api"
-).replace(/\/$/, "");
+import "./DepartmentDistribution.css";
 
 // Couleurs dans l'ordre : 4 services principaux + "Autres"
 const COLORS = ["#ff7900", "#1d8cf8", "#19b57f", "#8b5cf6", "#9aa9c2"];

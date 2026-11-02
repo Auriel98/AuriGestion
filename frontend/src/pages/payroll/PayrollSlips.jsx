@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import api from "../../api/api";
+import api, { API_ORIGIN } from "../../api/api";
 import MiniDashboard from "../../components/dashboard/MiniDashboard";
 import "./PayrollSlips.css";
 
@@ -300,7 +300,7 @@ export default function PayrollSlips() {
                         <div className="employee-avatar">
                           {slip.photo_url ? (
                             <img
-                              src={`${import.meta.env.VITE_API_ORIGIN}${slip.photo_url}`}
+                              src={`${API_ORIGIN}${slip.photo_url}`}
                               alt=""
                             />
                           ) : (

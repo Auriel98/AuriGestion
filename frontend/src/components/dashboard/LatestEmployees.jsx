@@ -3,15 +3,9 @@ import { Link } from "react-router-dom";
 
 import { MoreHorizontal } from "lucide-react";
 
+import { API_URL, API_ORIGIN } from "../../api/api";
+
 import "./LatestEmployees.css";
-
-const API_URL = (
-  import.meta.env.VITE_API_URL || "http://localhost:5000/api"
-).replace(/\/$/, "");
-
-const API_ORIGIN = (
-  import.meta.env.VITE_API_ORIGIN || "http://localhost:5000"
-).replace(/\/$/, "");
 
 // La base stocke un chemin relatif (/uploads/...) :
 // on le préfixe avec l'adresse du backend.

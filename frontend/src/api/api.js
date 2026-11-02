@@ -1,11 +1,12 @@
-const API_URL =
+export const API_URL = (
     import.meta.env.VITE_API_URL ||
-    "http://localhost:5000/api";
+    "http://localhost:5000/api"
+).replace(/\/$/, "");
 
-export const API_ORIGIN =
+export const API_ORIGIN = (
     import.meta.env.VITE_API_ORIGIN ||
-    "http://localhost:5000";
-
+    "http://localhost:5000"
+).replace(/\/$/, "");
 
 const api = async (
     endpoint,

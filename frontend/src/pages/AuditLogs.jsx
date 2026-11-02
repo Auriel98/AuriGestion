@@ -2,11 +2,9 @@ import { Fragment, useEffect, useState } from "react";
 
 import { ChevronDown, ChevronRight, ChevronLeft } from "lucide-react";
 
-import "./AuditLogs.css";
+import { API_URL } from "../api/api";
 
-const API_URL = (
-  import.meta.env.VITE_API_URL || "http://localhost:5000/api"
-).replace(/\/$/, "");
+import "./AuditLogs.css";
 
 const PAGE_SIZE = 20;
 

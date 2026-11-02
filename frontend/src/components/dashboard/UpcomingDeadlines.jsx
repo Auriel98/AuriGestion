@@ -3,11 +3,9 @@ import { useNavigate } from "react-router-dom";
 
 import { ChevronRight } from "lucide-react";
 
-import "./UpcomingDeadlines.css";
+import { API_URL } from "../../api/api";
 
-const API_URL = (
-  import.meta.env.VITE_API_URL || "http://localhost:5000/api"
-).replace(/\/$/, "");
+import "./UpcomingDeadlines.css";
 
 const MONTH_LABELS = [
   "Jan",

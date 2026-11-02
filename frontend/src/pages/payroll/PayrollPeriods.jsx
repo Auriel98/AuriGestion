@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import api from "../../api/api";
+import api, { API_ORIGIN } from "../../api/api";
 import MiniDashboard from "../../components/dashboard/MiniDashboard";
 import "./PayrollPeriods.css";
 
@@ -680,7 +680,7 @@ export default function PayrollPeriods() {
                     {employee.photo_url ? (
                       <img
                         src={
-                          `${import.meta.env.VITE_API_ORIGIN}${employee.photo_url}`
+                          `${API_ORIGIN}${employee.photo_url}`
                         }
                         alt=""
                       />

@@ -9,7 +9,7 @@ import {
     File
 } from "lucide-react";
 
-import api from "../../api/api";
+import api, { API_ORIGIN } from "../../api/api";
 import "./DocumentModal.css";
 
 
@@ -755,7 +755,7 @@ const DocumentModal = ({
 
                                                 <a
                                                     href={
-                                                        `${import.meta.env.VITE_API_ORIGIN}${document.file_url}`
+                                                        `${API_ORIGIN}${document.file_url}`
                                                     }
                                                     target="_blank"
                                                     rel="noreferrer"
