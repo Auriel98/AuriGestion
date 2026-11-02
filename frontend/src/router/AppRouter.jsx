@@ -19,16 +19,22 @@ import PayrollPeriods from "../pages/payroll/PayrollPeriods";
 import PayrollSlips from "../pages/payroll/PayrollSlips";
 import PayrollSlipDetail from "../pages/payroll/PayrollSlipDetail";
 import PayrollSlipPrint from "../pages/payroll/PayrollSlipPrint";
+
 import Company from "../pages/company/Company";
-import Clients from "../pages/Clients/clients";
-import Quotes from "../pages/quotes/Quotes";
-import QuoteDetail from "../pages/quotes/QuoteDetail";
-import Invoices from "../pages/invoices/Invoices";
-import InvoiceDetail from "../pages/invoices/InvoiceDetail";
+import Clients from "../pages/clients/Clients";
+
+import Quotes from "../pages/Quotes/Quotes";
+import QuoteDetail from "../pages/Quotes/QuoteDetail";
+
+import Invoices from "../pages/Invoices/Invoices";
+import InvoiceDetail from "../pages/Invoices/InvoiceDetail";
+
 import Markets from "../pages/markets/Markets";
 import MarketDetail from "../pages/markets/MarketDetail";
+
 import Expenses from "../pages/expenses/Expenses";
 import ExpenseDetail from "../pages/expenses/ExpenseDetail";
+
 import Budget from "../pages/Budget/Budget";
 import AuditLogs from "../pages/AuditLogs";
 
