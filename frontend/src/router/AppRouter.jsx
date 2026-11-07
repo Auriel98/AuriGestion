@@ -19,6 +19,7 @@ import PayrollPeriods from "../pages/payroll/PayrollPeriods";
 import PayrollSlips from "../pages/payroll/PayrollSlips";
 import PayrollSlipDetail from "../pages/payroll/PayrollSlipDetail";
 import PayrollSlipPrint from "../pages/payroll/PayrollSlipPrint";
+import EmployerCharges from "../pages/payroll/EmployerCharges";
 
 import Company from "../pages/company/Company";
 import Clients from "../pages/clients/Clients";
@@ -206,7 +207,17 @@ const AppRouter = () => {
                         </Page>
                     }
                 />
+                
+                {/* Charges patronales */}
 
+                <Route
+                    path="/paie/charges-patronales"
+                    element={
+                        <Page>
+                            <EmployerCharges />
+                        </Page>
+                    }
+                />
 
                 {/* ==============================
                     ENTREPRISE

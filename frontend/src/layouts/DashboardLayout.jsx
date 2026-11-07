@@ -14,6 +14,7 @@ import {
     CalendarCheck,
     CalendarRange,
     Settings,
+    Landmark,
     Receipt,
     BriefcaseBusiness,
     ChartColumn,
@@ -110,6 +111,13 @@ const MENU = [
                 subtitle: "Taux, taxes et retenues",
                 path: "/paie/parametres",
                 icon: Settings,
+            },
+
+            {
+                label: "Charges patronales",
+                subtitle: "Aperçu des cotisations patronales par employé",
+                path: "/paie/charges-patronales",
+                icon: Landmark,
             },
         ],
     },

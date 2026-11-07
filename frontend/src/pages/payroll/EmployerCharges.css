@@ -1,0 +1,57 @@
+.ec-page{--ec-orange:#f97316;--ec-line:#eceef2;--ec-muted:#6b7280;--ec-card:#fff;--ec-head:#fafafa;display:flex;flex-direction:column;gap:18px}
+.ec-page h1{margin:0;font-size:24px;font-weight:700}
+.ec-page h2{margin:0;font-size:17px}
+.ec-page p{margin:4px 0 0}
+.ec-muted{color:var(--ec-muted)}
+.ec-small{font-size:12px}
+.ec-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.ec-actions{display:flex;gap:12px}
+.ec-btn{border:1px solid var(--ec-line);background:var(--ec-card);border-radius:8px;padding:10px 16px;font:inherit;font-weight:600;cursor:pointer}
+.ec-btn:disabled{opacity:.5;cursor:not-allowed}
+.ec-btn-primary{background:var(--ec-orange);border-color:var(--ec-orange);color:#fff}
+.ec-btn:focus-visible,.ec-filters select:focus-visible,.ec-filters input:focus-visible{outline:2px solid var(--ec-orange);outline-offset:2px}
+.ec-card{background:var(--ec-card);border:1px solid var(--ec-line);border-radius:12px}
+.ec-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.ec-kpi{padding:18px 20px;display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.ec-kpi>div{display:flex;flex-direction:column;gap:8px}
+.ec-kpi strong{font-size:22px}
+.ec-dot{width:48px;height:48px;border-radius:50%;flex:none}
+.ec-orange{background:#fff1e6}.ec-green{background:#e8f7ee}.ec-blue{background:#e3f3fc}.ec-violet{background:#efeafd}
+.ec-filters{padding:18px 22px;display:flex;gap:28px;align-items:flex-end;flex-wrap:wrap}
+.ec-filters label{display:flex;flex-direction:column;gap:8px;font-weight:600;font-size:13px}
+.ec-filters select,.ec-filters input{min-width:220px;padding:10px 12px;border:1px solid var(--ec-line);border-radius:8px;font:inherit;background:var(--ec-card)}
+.ec-refresh{margin-left:auto}
+.ec-detail{padding:22px 16px 18px}
+.ec-detail h2,.ec-detail>p{margin-left:8px}
+.ec-detail>p{margin-bottom:16px}
+.ec-error{margin:0 8px 12px;padding:10px 12px;border-radius:8px;background:#fdecec;color:#b42318}
+.ec-scroll{overflow-x:auto}
+.ec-table{width:100%;min-width:980px;border-collapse:collapse;font-size:13px}
+.ec-table th,.ec-table td{padding:12px;border-bottom:1px solid var(--ec-line);text-align:right;white-space:nowrap}
+.ec-table th{background:var(--ec-head);font-weight:600;font-size:12.5px}
+.ec-table tfoot td{background:var(--ec-head);font-weight:700;border-bottom:0}
+.ec-left{text-align:left!important}
+.ec-center{text-align:center!important}
+.ec-sep{border-left:1px solid var(--ec-line)}
+.ec-wrap{white-space:normal!important;min-width:120px;color:var(--ec-muted)}
+.ec-total{color:var(--ec-orange);font-weight:700}
+.ec-empty{padding:28px!important;color:var(--ec-muted)}
+.ec-emp{display:flex;align-items:center;gap:10px;font-weight:500}
+.ec-emp img,.ec-avatar{width:30px;height:30px;border-radius:50%;object-fit:cover;flex:none}
+.ec-avatar{display:grid;place-items:center;background:#fff1e6;color:var(--ec-orange);font-size:11px;font-weight:600}
+.ec-foot{margin:18px 8px 0}
+@media (max-width:1000px){.ec-cards{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.ec-cards{grid-template-columns:1fr}.ec-filters select,.ec-filters input{min-width:100%}.ec-filters label{width:100%}.ec-refresh{margin:0;width:100%}}
+@media print{.ec-noprint{display:none!important}}
+
+.ec-head{align-items:center}
+.ec-tabs{display:inline-flex;border:1px solid var(--ec-line);border-radius:10px;padding:4px;background:var(--ec-card);gap:4px}
+.ec-tab{border:0;background:transparent;font:inherit;font-weight:600;padding:8px 18px;border-radius:7px;cursor:pointer;color:var(--ec-muted)}
+.ec-tab-on{background:var(--ec-orange);color:#fff}
+.ec-tab:focus-visible{outline:2px solid var(--ec-orange);outline-offset:2px}
+.ec-link{border:0;background:none;padding:0;font:inherit;font-weight:500;color:inherit;cursor:pointer;text-align:left}
+.ec-link:hover{color:var(--ec-orange);text-decoration:underline}
+.ec-cap{text-transform:capitalize}
+.ec-history-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin:0 8px 16px}
+.ec-history-head h2,.ec-history-head p{margin-left:0}
+.ec-error{margin:0}

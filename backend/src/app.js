@@ -18,6 +18,7 @@ const payrollSlipRoutes = require("./routes/payroll/payrollSlip.routes");
 const payrollSlipLineRoutes = require("./routes/payroll/payrollSlipLine.routes");
 const payrollSettingsRoutes = require("./routes/payroll/payrollSettings.routes");
 const payrollBracketRoutes = require("./routes/payroll/payrollBracket.routes");
+const employerChargesRoutes = require("./routes/payroll/employerCharges.routes");
 
 const companyRoutes = require("./modules/company/company.routes");
 
@@ -147,6 +148,7 @@ app.use("/api/payroll/periods", payrollPeriodRoutes);
 app.use("/api/payroll/slips", payrollSlipRoutes);
 app.use("/api/payroll/slips", payrollSlipLineRoutes);
 app.use("/api/payroll/settings", payrollSettingsRoutes);
+app.use("/api/payroll/employer-charges", employerChargesRoutes);
 app.use("/api/payroll", payrollBracketRoutes);
 
 // ========================================
