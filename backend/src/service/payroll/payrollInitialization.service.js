@@ -2,7 +2,8 @@ const pool = require("../../config/db");
 
 /**
  * Définition d'un composant par défaut.
- * flags = [taxable, cnss, cnamgs, tcs, irpp]
+ * flags = [taxable, cnss, cnamgs, css, irpp]
+ * (le 4e flag est stocké dans payroll_components.tcs_subject)
  */
 const component = (code, name, category, method, flags, specialCode = null) => ({
     code,
@@ -36,7 +37,8 @@ const DEFAULT_COMPONENTS = [
 
     component("CNSS", "CNSS salarié", "tax", "percentage", NONE, "CNSS_EMP"),
     component("CNAMGS", "CNAMGS salarié", "tax", "percentage", NONE, "CNAMGS_EMP"),
-    component("TCS", "Taxe complémentaire sur salaire", "tax", "percentage", NONE, "TCS"),
+    // CSS : ancien composant TCS
+    component("CSS", "Contribution solidarité sociale", "tax", "percentage", NONE, "CSS"),
     component(
         "IRPP",
         "Impôt sur le revenu des personnes physiques",
@@ -77,8 +79,9 @@ const DEFAULT_RULES = [
         component_code: "CNAMGS",
     },
     {
-        code: "TCS",
-        name: "Taxe complémentaire sur salaire",
+        // CSS : ancienne règle TCS
+        code: "CSS",
+        name: "Contribution solidarité sociale",
         rule_type: "tax",
         calculation_method: "percentage",
         employee_rate: 5,
@@ -86,7 +89,7 @@ const DEFAULT_RULES = [
         ceiling_amount: null,
         base_type: "gross_salary",
         sort_order: 30,
-        component_code: "TCS",
+        component_code: "CSS",
     },
     {
         code: "IRPP",
@@ -180,7 +183,7 @@ const initializePayroll = async (companyId) => {
             SELECT id, code
             FROM payroll_components
             WHERE company_id = $1
-              AND code IN ('CNSS', 'CNAMGS', 'TCS', 'IRPP')
+              AND code IN ('CNSS', 'CNAMGS', 'CSS', 'IRPP')
             `,
             [companyId]
         );

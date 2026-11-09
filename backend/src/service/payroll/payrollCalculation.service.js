@@ -43,6 +43,8 @@ const getPayrollSettings = async (client, companyId) => {
  *  - la règle est active ;
  *  - le composant lié (s'il existe) est actif ;
  *  - la date de paie est dans sa période de validité.
+ *
+ * (pc.tcs_subject : colonne de payroll_components, non renommée)
  */
 const getActiveRules = async (client, companyId, date) => {
     const result = await client.query(
@@ -171,7 +173,7 @@ const calculateProgressive = (base, brackets) => {
  * taxable_salary             = gains dont la ligne est marquée taxable
  * after_social_contributions = brut - cotisations sociales déjà calculées
  *                              (uniquement celles qui sont actives)
- * cnss_subject / cnamgs_subject / tcs_subject / irpp_subject
+ * cnss_subject / cnamgs_subject / tcs_subject (ou css_subject) / irpp_subject
  *                            = somme des gains marqués soumis à cet impôt
  */
 const resolveRuleBase = ({
@@ -201,7 +203,9 @@ const resolveRuleBase = ({
         case "cnamgs_subject":
             return subjectBases.cnamgs || 0;
 
+        // CSS : on accepte l'ancienne et la nouvelle valeur de base_type
         case "tcs_subject":
+        case "css_subject":
             return subjectBases.tcs || 0;
 
         case "irpp_subject":
@@ -316,7 +320,7 @@ const insertSystemLine = async (
         taxable = false,
         cnssSubject = false,
         cnamgsSubject = false,
-        tcsSubject = false,
+        tcsSubject = false, // nom JS interne, inchangé
         irppSubject = false,
     }
 ) => {
@@ -340,7 +344,7 @@ const insertSystemLine = async (
             taxable,
             cnss_subject,
             cnamgs_subject,
-            tcs_subject,
+            css_subject,
             irpp_subject
         )
         VALUES (
@@ -424,6 +428,7 @@ const calculateSlip = async ({ client, slipId, companyId }) => {
     /*
      * Composant SAL_BASE : ses indicateurs (taxable, cnss_subject...)
      * sont copiés sur la ligne du salaire de base.
+     * (payroll_components garde la colonne tcs_subject)
      */
     const baseComponentResult = await client.query(
         `
@@ -478,7 +483,7 @@ const calculateSlip = async ({ client, slipId, companyId }) => {
 
     /*
      * Totaux avant taxes, calculés à partir des indicateurs
-     * enregistrés directement sur les lignes.
+     * enregistrés directement sur les lignes (payroll_slip_lines).
      */
     const totalsResult = await client.query(
         `
@@ -512,7 +517,7 @@ const calculateSlip = async ({ client, slipId, companyId }) => {
 
             COALESCE(SUM(gain) FILTER (
                 WHERE category = 'earning'
-                  AND tcs_subject = TRUE
+                  AND css_subject = TRUE
             ), 0) AS tcs_base,
 
             COALESCE(SUM(gain) FILTER (

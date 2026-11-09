@@ -177,6 +177,7 @@ const prepareSlips = async (req, res) => {
 
     /*
      * Composant SAL_BASE (chargé une seule fois)
+     * (la table payroll_components garde la colonne tcs_subject)
      */
     const baseComponentResult = await client.query(
       `
@@ -353,7 +354,7 @@ const prepareSlips = async (req, res) => {
           taxable,
           cnss_subject,
           cnamgs_subject,
-          tcs_subject,
+          css_subject,
           irpp_subject
         )
         VALUES (
@@ -384,7 +385,7 @@ const prepareSlips = async (req, res) => {
           baseComponent?.taxable || false,
           baseComponent?.cnss_subject || false,
           baseComponent?.cnamgs_subject || false,
-          baseComponent?.tcs_subject || false,
+          baseComponent?.tcs_subject || false, // CSS : vient de payroll_components
           baseComponent?.irpp_subject || false,
         ]
       );

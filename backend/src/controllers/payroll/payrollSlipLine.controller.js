@@ -83,6 +83,7 @@ const recalculateKeepDraft = async (client, slipId, companyId) => {
 
 /**
  * Récupère un composant de paie actif de l'entreprise.
+ * (la table payroll_components garde la colonne tcs_subject)
  */
 const getComponent = async (client, componentId, companyId) => {
     if (!componentId) return null;
@@ -352,7 +353,7 @@ const createLine = async (req, res) => {
                 taxable,
                 cnss_subject,
                 cnamgs_subject,
-                tcs_subject,
+                css_subject,
                 irpp_subject
             )
             VALUES (
@@ -381,7 +382,7 @@ const createLine = async (req, res) => {
                 component?.taxable || false,
                 component?.cnss_subject || false,
                 component?.cnamgs_subject || false,
-                component?.tcs_subject || false,
+                component?.tcs_subject || false, // CSS : vient de payroll_components
                 component?.irpp_subject || false,
             ]
         );
@@ -499,6 +500,8 @@ const updateLine = async (req, res) => {
         /*
          * Composant : si fourni, on rafraîchit ses indicateurs,
          * sinon on garde ceux de la ligne.
+         * (flags.tcs_subject est un nom JS interne ; la colonne de
+         * payroll_slip_lines s'appelle maintenant css_subject)
          */
         let finalComponentId = existing.component_id;
 
@@ -506,7 +509,7 @@ const updateLine = async (req, res) => {
             taxable: existing.taxable || false,
             cnss_subject: existing.cnss_subject || false,
             cnamgs_subject: existing.cnamgs_subject || false,
-            tcs_subject: existing.tcs_subject || false,
+            tcs_subject: existing.css_subject || false, // CSS : colonne renommée
             irpp_subject: existing.irpp_subject || false,
         };
 
@@ -523,7 +526,7 @@ const updateLine = async (req, res) => {
                 taxable: component?.taxable || false,
                 cnss_subject: component?.cnss_subject || false,
                 cnamgs_subject: component?.cnamgs_subject || false,
-                tcs_subject: component?.tcs_subject || false,
+                tcs_subject: component?.tcs_subject || false, // vient de payroll_components
                 irpp_subject: component?.irpp_subject || false,
             };
         }
@@ -564,7 +567,7 @@ const updateLine = async (req, res) => {
                 taxable = $13,
                 cnss_subject = $14,
                 cnamgs_subject = $15,
-                tcs_subject = $16,
+                css_subject = $16,
                 irpp_subject = $17
             WHERE id = $18
               AND slip_id = $19
