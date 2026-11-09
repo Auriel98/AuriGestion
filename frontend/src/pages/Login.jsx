@@ -131,9 +131,9 @@ const Login = () => {
 
                     <div>
                         <h1>
-                            Auri<span>Gestion</span>
+                            Gestion <span>d'entreprise</span>
                         </h1>
-                        <p>Gestion d'entreprise</p>
+                        <p>Gérer efficacement votre entreprise</p>
                     </div>
 
                 </div>

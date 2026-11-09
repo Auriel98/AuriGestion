@@ -568,7 +568,7 @@ export default function PayrollSettings() {
                         )}
 
                         {component.tcs_subject && (
-                          <span>TCSS</span>
+                          <span>CSS</span>
                         )}
                       </div>
                     </td>

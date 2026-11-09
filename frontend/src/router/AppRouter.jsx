@@ -42,10 +42,11 @@ import AuditLogs from "../pages/AuditLogs";
 
 // =====================================================
 // PAGE PROTÉGÉE + DASHBOARD LAYOUT
+// permission (optionnel) : sans lui, il suffit d'être connecté
 // =====================================================
 
-const Page = ({ children }) => (
-    <ProtectedRoute>
+const Page = ({ children, permission }) => (
+    <ProtectedRoute permission={permission}>
         <DashboardLayout>
             {children}
         </DashboardLayout>
@@ -68,23 +69,16 @@ const AppRouter = () => {
                     AUTHENTIFICATION
                 ============================== */}
 
-                <Route
-                    path="/login"
-                    element={<Login />}
-                />
+                <Route path="/login" element={<Login />} />
 
 
                 {/* ==============================
-                    DASHBOARD
+                    DASHBOARD (connecté suffit)
                 ============================== */}
 
                 <Route
                     path="/"
-                    element={
-                        <Page>
-                            <Dashboard />
-                        </Page>
-                    }
+                    element={<Page><Dashboard /></Page>}
                 />
 
 
@@ -94,11 +88,7 @@ const AppRouter = () => {
 
                 <Route
                     path="/users"
-                    element={
-                        <Page>
-                            <Users />
-                        </Page>
-                    }
+                    element={<Page permission="users:read"><Users /></Page>}
                 />
 
 
@@ -108,11 +98,7 @@ const AppRouter = () => {
 
                 <Route
                     path="/employees"
-                    element={
-                        <Page>
-                            <Employees />
-                        </Page>
-                    }
+                    element={<Page permission="employees:read"><Employees /></Page>}
                 />
 
 
@@ -122,11 +108,7 @@ const AppRouter = () => {
 
                 <Route
                     path="/contracts"
-                    element={
-                        <Page>
-                            <Contracts />
-                        </Page>
-                    }
+                    element={<Page permission="contracts:read"><Contracts /></Page>}
                 />
 
 
@@ -136,88 +118,44 @@ const AppRouter = () => {
 
                 <Route
                     path="/attendance"
-                    element={
-                        <Page>
-                            <Attendance />
-                        </Page>
-                    }
+                    element={<Page permission="attendance:read"><Attendance /></Page>}
                 />
 
 
-                {/* =================================================
+                {/* ==============================
                     PAIE
-                ================================================= */}
-
-
-                {/* Paramètres de paie */}
+                ============================== */}
 
                 <Route
                     path="/paie/parametres"
-                    element={
-                        <Page>
-                            <PayrollSettings />
-                        </Page>
-                    }
+                    element={<Page permission="payroll:read"><PayrollSettings /></Page>}
                 />
-
-
-                {/* Liste des périodes */}
 
                 <Route
                     path="/paie/periodes"
-                    element={
-                        <Page>
-                            <PayrollPeriods />
-                        </Page>
-                    }
+                    element={<Page permission="payroll:read"><PayrollPeriods /></Page>}
                 />
-
-
-                {/* Bulletins d'une période */}
 
                 <Route
                     path="/paie/periodes/:periodId/bulletins"
-                    element={
-                        <Page>
-                            <PayrollSlips />
-                        </Page>
-                    }
+                    element={<Page permission="payroll:read"><PayrollSlips /></Page>}
                 />
-
-
-                {/* Détail d'un bulletin */}
 
                 <Route
                     path="/paie/bulletins/:id"
-                    element={
-                        <Page>
-                            <PayrollSlipDetail />
-                        </Page>
-                    }
+                    element={<Page permission="payroll:read"><PayrollSlipDetail /></Page>}
                 />
-
-
-                {/* Impression du bulletin */}
 
                 <Route
                     path="/paie/bulletins/:id/imprimer"
-                    element={
-                        <Page>
-                            <PayrollSlipPrint />
-                        </Page>
-                    }
+                    element={<Page permission="payroll:export_pdf"><PayrollSlipPrint /></Page>}
                 />
-                
-                {/* Charges patronales */}
 
                 <Route
                     path="/paie/charges-patronales"
-                    element={
-                        <Page>
-                            <EmployerCharges />
-                        </Page>
-                    }
+                    element={<Page permission="payroll:read"><EmployerCharges /></Page>}
                 />
+
 
                 {/* ==============================
                     ENTREPRISE
@@ -225,11 +163,7 @@ const AppRouter = () => {
 
                 <Route
                     path="/entreprise"
-                    element={
-                        <Page>
-                            <Company />
-                        </Page>
-                    }
+                    element={<Page permission="company:read"><Company /></Page>}
                 />
 
 
@@ -239,11 +173,7 @@ const AppRouter = () => {
 
                 <Route
                     path="/clients"
-                    element={
-                        <Page>
-                            <Clients />
-                        </Page>
-                    }
+                    element={<Page permission="clients:read"><Clients /></Page>}
                 />
 
 
@@ -253,20 +183,12 @@ const AppRouter = () => {
 
                 <Route
                     path="/devis"
-                    element={
-                        <Page>
-                            <Quotes />
-                        </Page>
-                    }
+                    element={<Page permission="quotes:read"><Quotes /></Page>}
                 />
 
                 <Route
                     path="/devis/:id"
-                    element={
-                        <Page>
-                            <QuoteDetail />
-                        </Page>
-                    }
+                    element={<Page permission="quotes:read"><QuoteDetail /></Page>}
                 />
 
 
@@ -276,20 +198,12 @@ const AppRouter = () => {
 
                 <Route
                     path="/factures"
-                    element={
-                        <Page>
-                            <Invoices />
-                        </Page>
-                    }
+                    element={<Page permission="invoices:read"><Invoices /></Page>}
                 />
 
                 <Route
                     path="/factures/:id"
-                    element={
-                        <Page>
-                            <InvoiceDetail />
-                        </Page>
-                    }
+                    element={<Page permission="invoices:read"><InvoiceDetail /></Page>}
                 />
 
 
@@ -299,20 +213,12 @@ const AppRouter = () => {
 
                 <Route
                     path="/marches"
-                    element={
-                        <Page>
-                            <Markets />
-                        </Page>
-                    }
+                    element={<Page permission="markets:read"><Markets /></Page>}
                 />
 
                 <Route
                     path="/marches/:id"
-                    element={
-                        <Page>
-                            <MarketDetail />
-                        </Page>
-                    }
+                    element={<Page permission="markets:read"><MarketDetail /></Page>}
                 />
 
 
@@ -322,20 +228,12 @@ const AppRouter = () => {
 
                 <Route
                     path="/depenses"
-                    element={
-                        <Page>
-                            <Expenses />
-                        </Page>
-                    }
+                    element={<Page permission="expenses:read"><Expenses /></Page>}
                 />
 
                 <Route
                     path="/depenses/:id"
-                    element={
-                        <Page>
-                            <ExpenseDetail />
-                        </Page>
-                    }
+                    element={<Page permission="expenses:read"><ExpenseDetail /></Page>}
                 />
 
 
@@ -345,25 +243,17 @@ const AppRouter = () => {
 
                 <Route
                     path="/budget"
-                    element={
-                        <Page>
-                            <Budget />
-                        </Page>
-                    }
+                    element={<Page permission="budget:read"><Budget /></Page>}
                 />
 
 
                 {/* ==============================
-                    JOURNAL D'AUDIT
+                    JOURNAL D'AUDIT (directeur uniquement)
                 ============================== */}
 
                 <Route
                     path="/audit"
-                    element={
-                        <Page>
-                            <AuditLogs />
-                        </Page>
-                    }
+                    element={<Page permission="audit:read"><AuditLogs /></Page>}
                 />
 
             </Routes>

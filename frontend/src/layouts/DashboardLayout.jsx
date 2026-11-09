@@ -25,6 +25,7 @@ import {
 } from "lucide-react";
 
 import { useAuth } from "../context/AuthContext";
+import { usePermissions } from "../hooks/usePermissions";
 import { API_ORIGIN } from "../api/api";
 import ProfileModal from "../components/profile/ProfileModal";
 
@@ -35,16 +36,12 @@ import "./TopbarUser.css";
 /*
  * MENU PRINCIPAL
  *
- * Chaque entrée peut avoir une fonction `isActive(pathname)`.
- * Sans elle, l'entrée est active lorsque l'URL commence par son path.
+ * Chaque entrée peut avoir :
+ *  - `permission` : l'entrée n'est visible que si l'utilisateur
+ *    possède cette permission (sans `permission` : visible par tous)
+ *  - `isActive(pathname)` : logique d'activation personnalisée
  *
- * Nécessaire pour la paie :
- * les bulletins s'ouvrent depuis une période sur
- * /paie/periodes/:id/bulletins
- * et doivent garder l'entrée « Périodes de paie » active.
- *
- * Un groupe peut avoir `roles: [...]` : il n'est alors visible
- * que pour ces rôles. Sans `roles`, il est visible par tous.
+ * Un groupe sans aucune entrée visible n'est pas affiché.
  */
 const MENU = [
     {
@@ -67,6 +64,7 @@ const MENU = [
                 subtitle: "Gestion des employés",
                 path: "/employees",
                 icon: Users,
+                permission: "employees:read",
             },
 
             {
@@ -74,6 +72,7 @@ const MENU = [
                 subtitle: "Gestion des comptes utilisateurs",
                 path: "/users",
                 icon: UserRoundCog,
+                permission: "users:read",
             },
 
             {
@@ -81,6 +80,7 @@ const MENU = [
                 subtitle: "Gestion des contrats",
                 path: "/contracts",
                 icon: FileText,
+                permission: "contracts:read",
             },
 
             {
@@ -88,6 +88,7 @@ const MENU = [
                 subtitle: "Suivi des présences",
                 path: "/attendance",
                 icon: CalendarCheck,
+                permission: "attendance:read",
             },
         ],
     },
@@ -100,6 +101,7 @@ const MENU = [
                 subtitle: "Créer et gérer les périodes",
                 path: "/paie/periodes",
                 icon: CalendarRange,
+                permission: "payroll:read",
 
                 isActive: (pathname) =>
                     pathname === "/paie/periodes" ||
@@ -111,6 +113,7 @@ const MENU = [
                 subtitle: "Taux, taxes et retenues",
                 path: "/paie/parametres",
                 icon: Settings,
+                permission: "payroll:read",
             },
 
             {
@@ -118,6 +121,7 @@ const MENU = [
                 subtitle: "Aperçu des cotisations patronales par employé",
                 path: "/paie/charges-patronales",
                 icon: Landmark,
+                permission: "payroll:read",
             },
         ],
     },
@@ -130,6 +134,7 @@ const MENU = [
                 subtitle: "Gestion des clients",
                 path: "/clients",
                 icon: Users,
+                permission: "clients:read",
             },
 
             {
@@ -137,6 +142,7 @@ const MENU = [
                 subtitle: "Créer et gérer les devis",
                 path: "/devis",
                 icon: FileText,
+                permission: "quotes:read",
             },
 
             {
@@ -144,6 +150,7 @@ const MENU = [
                 subtitle: "Suivi des marchés et budgets",
                 path: "/marches",
                 icon: BriefcaseBusiness,
+                permission: "markets:read",
             },
 
             {
@@ -151,6 +158,7 @@ const MENU = [
                 subtitle: "Suivi des dépenses",
                 path: "/depenses",
                 icon: Receipt,
+                permission: "expenses:read",
             },
 
             {
@@ -158,6 +166,7 @@ const MENU = [
                 subtitle: "Facturation clients",
                 path: "/factures",
                 icon: Receipt,
+                permission: "invoices:read",
             },
 
             {
@@ -165,19 +174,20 @@ const MENU = [
                 subtitle: "Analyse du budget et de la rentabilité",
                 path: "/budget",
                 icon: ChartColumn,
+                permission: "budget:read",
             },
         ],
     },
 
     {
         title: "ADMINISTRATION",
-        roles: ["directeur"],
         items: [
             {
                 label: "Journal d'audit",
                 subtitle: "Historique des actions des utilisateurs",
                 path: "/audit",
                 icon: ScrollText,
+                permission: "audit:read",
             },
         ],
     },
@@ -211,6 +221,7 @@ const isItemActive = (item, pathname) => {
 const DashboardLayout = ({ children }) => {
 
     const { user, logout } = useAuth();
+    const { can } = usePermissions();
     const location = useLocation();
 
     // Fenêtre « Mon profil » et petit menu du header
@@ -250,18 +261,18 @@ const DashboardLayout = ({ children }) => {
 
 
     /*
-     * Groupes du menu visibles pour le rôle de l'utilisateur.
-     * La comparaison ignore les majuscules.
+     * Menu filtré selon les permissions du rôle :
+     * 1. on garde uniquement les entrées autorisées
+     * 2. on retire les groupes devenus vides
      */
-    const userRole = String(user?.role || "").toLowerCase();
-
-    const visibleMenu = MENU.filter(
-        (section) =>
-            !section.roles ||
-            section.roles
-                .map((role) => role.toLowerCase())
-                .includes(userRole)
-    );
+    const visibleMenu = MENU
+        .map((section) => ({
+            ...section,
+            items: section.items.filter(
+                (item) => !item.permission || can(item.permission)
+            ),
+        }))
+        .filter((section) => section.items.length > 0);
 
 
     /*
@@ -317,42 +328,44 @@ const DashboardLayout = ({ children }) => {
                 {/* =====================================
                     ENTREPRISE
                 ===================================== */}
-                <NavLink
-                    to="/entreprise"
-                    className={
-                        location.pathname.startsWith("/entreprise")
-                            ? "company-box active"
-                            : "company-box"
-                    }
-                    title="Voir et modifier l'entreprise"
-                >
+                {can("company:read") && (
+                    <NavLink
+                        to="/entreprise"
+                        className={
+                            location.pathname.startsWith("/entreprise")
+                                ? "company-box active"
+                                : "company-box"
+                        }
+                        title="Voir et modifier l'entreprise"
+                    >
 
-                    <div className="company-icon">
+                        <div className="company-icon">
 
-                        {user?.company_logo ? (
-                            <img
-                                src={`${API_ORIGIN}${user.company_logo}`}
-                                alt=""
-                                className="company-icon-img"
-                            />
-                        ) : (
-                            <BriefcaseBusiness size={18} />
-                        )}
+                            {user?.company_logo ? (
+                                <img
+                                    src={`${API_ORIGIN}${user.company_logo}`}
+                                    alt=""
+                                    className="company-icon-img"
+                                />
+                            ) : (
+                                <BriefcaseBusiness size={18} />
+                            )}
 
-                    </div>
-
-
-                    <div>
-                        <span>Entreprise</span>
-                        <strong>
-                            {user?.company_name}
-                        </strong>
-                    </div>
+                        </div>
 
 
-                    <ChevronRight size={16} />
+                        <div>
+                            <span>Entreprise</span>
+                            <strong>
+                                {user?.company_name}
+                            </strong>
+                        </div>
 
-                </NavLink>
+
+                        <ChevronRight size={16} />
+
+                    </NavLink>
+                )}
 
 
                 {/* =====================================

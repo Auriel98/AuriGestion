@@ -1,4 +1,5 @@
 import { useAuth } from "../context/AuthContext";
+import { usePermissions } from "../hooks/usePermissions";
 import StatisticsCards from "../components/dashboard/StatisticsCards";
 import WorkforceEvolution from "../components/dashboard/WorkforceEvolution";
 import DepartmentDistribution from "../components/dashboard/DepartmentDistribution";
@@ -13,6 +14,8 @@ const Dashboard = () => {
 
     const firstName = user?.first_name || "Admin";
     const companyName = user?.company_name || "votre entreprise";
+    const { role, can } = usePermissions();
+console.log(role, can("payroll:read"), can("budget:read"));
 
     return (
         <main className="dashboard-page">
